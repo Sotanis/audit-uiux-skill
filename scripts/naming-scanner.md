@@ -12,7 +12,7 @@ Sử dụng AI Semantic matching để nhận diện dựa trên các từ khóa
 
 | Ý nghĩa Node | Từ khóa thường gặp (Sai chuẩn) | Tên Chuẩn Bắt Buộc (Standard Naming) | Phục vụ cho Gate |
 | :--- | :--- | :--- | :--- |
-| **Empty State** | `rong`, `trong`, `ko-co-data`, `no-data`, `blank`, `chua-cap-nhat`, `Group 12` (có text "không có") | Kết thúc bằng `_empty` (VD: `State_empty`, `List_empty`) | H4 |
+| **Empty State** | `no-data`, `rong`, `trong`, `ko-co-data`, `blank`, `chua-cap-nhat`, `Group 12` (có text "không có") | Kết thúc bằng `_empty` (VD: `State_empty`, `List_empty`) | H4 |
 | **Error State** | `loi`, `canh-bao`, `fail`, `alert`, `Group 45` (màu đỏ, icon alert) | Kết thúc bằng `_error` (VD: `State_error`, `Input_error`) | H5 |
 | **Loading State** | `xoay-xoay`, `dang-tai`, `skeleton`, `shimmer`, `load` | Kết thúc bằng `_loading` (VD: `State_loading`) | H6 |
 | **Disabled State** | `nut-mo`, `xam`, `disable`, `khong-bam-duoc` | Kết thúc bằng `_disabled` (VD: `Button_disabled`) | UX-05 |
@@ -40,7 +40,7 @@ Dưới đây là danh sách đề xuất chuẩn hóa:
 ## Bước 3 — Chờ Duyệt và Sửa Trực Tiếp (Apply Fix)
 1. Agent chờ user phản hồi.
 2. Nếu user gõ "Đồng ý" (hoặc các lệnh tương đương):
-   - Agent gọi công cụ `use_figma` của Figma MCP để thao tác trực tiếp trên canvas. Agent sẽ gửi lệnh đổi tên (`rename`) các layer có Node ID tương ứng theo đúng cột "Đề xuất đổi thành".
+   - Agent lập tức gọi công cụ Ghi của Figma MCP (ví dụ: `use_figma` hoặc các endpoint có quyền sửa file) để **đổi tên các layer theo đúng cột "Đề xuất đổi thành"**.
 3. Nếu user yêu cầu bỏ qua 1 layer nào đó: Cập nhật lại danh sách theo ý user và đổi tên các layer còn lại.
 
 ## Bước 4 — Resume Audit
