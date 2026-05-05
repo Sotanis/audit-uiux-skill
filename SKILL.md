@@ -191,7 +191,28 @@ Findings sống ở scratchpad, **KHÔNG sống trong chat**. Chat chỉ để g
 
 5. **Plan Lens** (xem Skip Rules bên dưới). Đánh dấu ✅ / ⏭️ cho 4 trục.
 
-**Exit**: scratchpad có Context + Framing + Lens Plan → P1.
+6. **Chạy Measurement Scripts** (ngay sau fetch Figma, trước khi vào P1):
+
+   Đọc và thực hiện TỪNG script trong thư mục [scripts/](scripts/):
+
+   a. **Contrast Checker** ([scripts/contrast-checker.md](scripts/contrast-checker.md)):
+      - Extract tất cả cặp (text fill color, parent background color) từ `get_design_context`
+      - Tính contrast ratio theo công thức WCAG → ghi bảng kết quả vào scratchpad
+      - Method: `measured` → dùng cho Hard Gate H1
+
+   b. **Tap Target Checker** ([scripts/tap-target-checker.md](scripts/tap-target-checker.md)):
+      - Lọc interactive nodes từ `get_metadata` (button, icon, input, link...)
+      - Đo width × height từ `absoluteBoundingBox` → ghi bảng kết quả vào scratchpad
+      - Method: `measured` → dùng cho Hard Gate H2
+
+   c. **Spacing Scanner** ([scripts/spacing-scanner.md](scripts/spacing-scanner.md)):
+      - Thu thập itemSpacing + padding từ auto-layout nodes
+      - Phát hiện magic numbers (giá trị ngoài spacing scale) → ghi bảng vào scratchpad
+      - Method: `measured` → dùng cho UI-03
+
+   **Output**: 3 bảng kết quả trong scratchpad section `## Measurement Results`, method = `measured`.
+
+**Exit**: scratchpad có Context + Framing + Lens Plan + Measurement Results → P1.
 
 ### P1 — Load KB targeted (~1.5–2K tokens)
 
@@ -199,7 +220,7 @@ Chỉ load section heuristics/checklist tương ứng lens đã plan.
 
 | Lens | File + Section |
 |------|---------------|
-| UI | `heuristics.md` §4 Typography, §5 Layout, §6 Color, §7 Interactive States; `checklist.md` Trục UI |
+| UI | `heuristics.md` §4 Typography, §5 Layout, §6 Color, §7 Interactive States; `checklist.md` Trục UI; `scripts/` kết quả measurement |
 | UX | `heuristics.md` §1 Visibility, §2 Consistency, §3 Navigation, §8 Error Prevention; `checklist.md` Trục UX |
 | Nghiệp vụ | `checklist.md` Trục NV; `jtbd-framework.md` Outcome Metrics |
 | Use-case | `jtbd-framework.md` toàn file; `checklist.md` Trục UC |
@@ -212,9 +233,16 @@ Chạy lần lượt từng lens ✅. Chạy lens nào, ghi `### Running: [Trụ
 
 #### Lens 1 — UI (Craft) — 11 items active
 
-Áp checklist Trục UI trong [checklist.md](checklist.md). Mỗi item: pass/fail + method tag. Đo trực tiếp từ data fetched ở P0:
+Áp checklist Trục UI trong [checklist.md](checklist.md). Mỗi item: pass/fail + method tag.
+
+**Sử dụng kết quả Measurement Scripts từ P0** (method = `measured`):
+- **Contrast** (Hard Gate H1): Dùng bảng contrast ratio từ P0 → pass/fail trực tiếp
+- **Tap target** (Hard Gate H2): Dùng bảng tap target size từ P0 → pass/fail trực tiếp
+- **Spacing** (UI-03): Dùng bảng spacing scanner từ P0 → liệt kê magic numbers
+
+**Đo bổ sung từ data fetched ở P0** (method = `measured`):
 - Token usage (UI-01, UI-02): % element bind variable vs hardcode
-- Spacing (UI-03), border radius (UI-05), color palette (UI-06): đếm distinct values
+- Border radius (UI-05), color palette (UI-06): đếm distinct values
 - Type hierarchy (UI-04): đếm distinct font sizes
 - Auto-layout (UI-08), constraint (UI-09): từ metadata
 - Icon (UI-07), state coverage (UI-10, UI-11): inferred từ naming/variants
@@ -230,26 +258,6 @@ Quan trọng:
 - **Dead-end** (UX-08): mọi state phải có path tiếp theo.
 - **Nielsen 1–10**: visibility, match real world, user control, consistency, error prevention, recognition over recall, flexibility, minimalist, recover from errors, help.
 
-**Sub-checklist bổ sung (scan song song, tạo finding nếu phát hiện):**
-
-UX Writing scan:
-- [ ] Label CTA rõ ràng, đúng hành động (không mơ hồ "Lưu" khi ý là "Áp dụng")
-- [ ] Thuật ngữ nhất quán xuyên suốt (cùng action = cùng label)
-- [ ] Ngôn ngữ phù hợp người dùng mục tiêu (không dùng jargon kỹ thuật/CRM nội bộ khi user là end-user)
-- [ ] Placeholder text đủ rõ, đủ contrast
-- [ ] Microcopy hướng dẫn ở chỗ cần (tooltip, helper text cho field phức tạp)
-
-Platform Consistency scan (Nielsen #4):
-- [ ] Vị trí nút Close/Back đúng chuẩn HIG/Material (× ở top-right, ← ở top-left)
-- [ ] Bottom sheet có drag handle rõ ràng (thanh ngang top, đủ kích thước)
-- [ ] Navigation pattern nhất quán giữa các màn (tab bar, back gesture)
-- [ ] Gesture affordance rõ (swipe, pull-to-refresh nếu applicable)
-
-Layout Efficiency scan:
-- [ ] Không có vùng trống lớn vô nghĩa (>40% viewport trống không có nội dung/hướng dẫn)
-- [ ] Content density phù hợp context (B2B cần thông tin dày hơn B2C)
-- [ ] CTA position nhất quán giữa các màn cùng luồng
-
 Items `out_of_scope` (UX-01, UX-03, UX-04) → ghi vào "Khuyến nghị test sau bàn giao", **không tính %**.
 
 #### Lens 3 — Nghiệp vụ (Business Logic) — 10 items active
@@ -264,10 +272,6 @@ Quan trọng:
 - **Validation (NV-06)**: required field rõ trước khi nhập, format hint, ràng buộc business.
 - **Trust signals (NV-09)** ở bước nhạy cảm (thanh toán, nhập PII).
 - **Confirmation cho action không reversible (NV-10)**: kèm summary (cái gì, ai, bao nhiêu, khi nào).
-
-**⚠️ Cross-check Hard Gate H7 ngay tại đây:**
-Scan TẤT CẢ button/action trong scope có label chứa: "Đặt lại" / "Reset" / "Xóa" / "Delete" / "Hủy bỏ" / "Gửi" / "Submit" / "Chuyển" / "Transfer" / "Remove".
-Nếu bất kỳ action nào KHÔNG có confirmation dialog hoặc undo affordance → tạo finding 🔴 VÀ flag Hard Gate H7 FAIL trong scratchpad. Không được bỏ sót.
 
 #### Lens 4 — Use-case (JTBD Coverage) — 8 items active
 
@@ -351,51 +355,8 @@ Báo cáo cuối phải đạt: **100% finding 🔴 và 🟡 có ảnh nhúng**.
 6. **Quyết định cuối** = giá trị thấp nhất trong 3 gate.
 7. **Liệt kê items `out_of_scope`** vào §"Khuyến nghị test sau bàn giao" trong báo cáo.
 8. **Expand compressed finding** → prose tiếng Việt theo [report-template.md](report-template.md).
-
-   **BẮT BUỘC cho mỗi finding 🔴/🟡 — KHÔNG ĐƯỢC bỏ qua bất kỳ mục nào:**
-
-   a. **Thông tin cơ bản**: Severity, hạng mục (8 nhóm heuristic), bước JTBD bị ảnh hưởng, tần suất × tác động
-   b. **Bằng chứng**: Ảnh node lỗi + Node ID + layer path + "Mong đợi vs Thực tế" với số đo cụ thể (contrast ratio, pixel size, spacing value...)
-   c. **Liên kết JTBD**: User Story bị ảnh hưởng (trích nguyên văn) + Hypothesis đánh giá (đáp ứng hay không + vì sao)
-   d. **Phân tích tác động hành vi**: Hành vi bị ảnh hưởng → Tác động đến US → Tác động đến Outcome (Speed/Accuracy/Satisfaction)
-   e. **Đề xuất khắc phục**: Cụ thể đến mức designer/dev hành động ngay — có thông số, có mô tả UI nếu cần (VD: "thêm loading skeleton 3 dòng khi API filter > 1s", "tách thành 2 CTA: [Áp dụng] primary + [Lưu bộ lọc] secondary")
-
-   ❌ CẤM: Xuất báo cáo mà finding 🔴/🟡 chỉ có 1 dòng compressed
-   ❌ CẤM: Đề xuất chung chung ("cần cải thiện", "nên thêm state", "cần rõ ràng hơn")
-   ✅ BẮT BUỘC: Đề xuất có thông số hoặc mô tả UI cụ thể
-
-9. **Điền Score Breakdown Table**: Với mỗi item trong 4 trục (38 items) + 11 Hard Gate, ghi pass/fail + method + ghi chú cụ thể vào bảng theo template.
-10. **Viết Nhận xét tổng quan UI/UX**: ≥2 điểm mạnh (cụ thể, gắn US) + ≥2 nguyên nhân gốc rễ điểm thấp (pattern, không lặp finding) + Ma trận Effort × Impact.
-11. **Sắp xếp**: Gate Decision Box → Score Breakdown → Nhận xét tổng quan → Framing → 🔴 → 🟡 → 🟢 → UX Writing → UX Flow → Khuyến nghị → Ghi chú dev → Bảng thuật ngữ.
-12. **Xuất 2 file**: `bao-cao.md` + `bao-cao.html` (ảnh base64), thư mục `~/Downloads/audit-report-<screen>-<YYYY-MM-DD>/`.
-
-### P3 Validation Checklist — BẮT BUỘC trước khi xuất bao-cao.md
-
-Agent PHẢI tự kiểm tra TỪNG mục dưới đây. Nếu bất kỳ mục nào ❌ → sửa ngay, KHÔNG xuất file.
-
-**Cấu trúc báo cáo:**
-- [ ] Gate Decision Box có đủ: 4 trục score + 3 tầng gate + hành động bắt buộc + khoảng cách đến READY
-- [ ] Score Breakdown Table: TỪNG item (38 items + 11 Hard Gate) có pass/fail + method + ghi chú
-- [ ] Nhận xét tổng quan UI/UX: ≥2 điểm mạnh + ≥2 nguyên nhân gốc rễ điểm thấp
-- [ ] Ma trận Effort × Impact hoặc bảng ưu tiên sửa
-
-**Findings:**
-- [ ] Mỗi finding 🔴/🟡 có ĐẦY ĐỦ 5 mục: (a) thông tin cơ bản + (b) bằng chứng + (c) liên kết JTBD + (d) tác động hành vi + (e) đề xuất cụ thể
-- [ ] Đề xuất sửa có thông số cụ thể (không chung chung)
-- [ ] 100% finding 🔴/🟡 có ảnh nhúng
-
-**Sections bắt buộc:**
-- [ ] Bối cảnh JTBD (có Job Map table: Bước / Mô tả / US / Hypothesis)
-- [ ] Phân tích UX Writing (5 hạng mục: Microcopy, Error Messages, Tone, Empty State Copy, CTA Clarity)
-- [ ] Phân tích UX Flow (số bước, dead-end, escape hatch)
-- [ ] Khuyến nghị trước bàn giao (P0/P1/P2 tách riêng)
-- [ ] Ghi chú cho dev (≥3 mục)
-- [ ] Khuyến nghị test sau bàn giao (4 out_of_scope items)
-- [ ] Bảng thuật ngữ
-
-**Consistency:**
-- [ ] Severity count trong Gate Decision Box KHỚP với tổng finding trong bảng (nếu bảng ghi F-001 là P0 thì Tầng 3 phải reflect P0 > 0)
-- [ ] Tổng P0/P1/P2 đếm đúng
+9. **Sắp xếp**: Gate Decision Box trước, sau đó Framing, sau đó 🔴 → 🟡 → 🟢.
+10. **Xuất 2 file**: `bao-cao.md` + `bao-cao.html` (ảnh base64), thư mục `~/Downloads/audit-report-<screen>-<YYYY-MM-DD>/`.
 
 ### P4 — Apply fix (gated, optional — chế độ COOK NOW)
 

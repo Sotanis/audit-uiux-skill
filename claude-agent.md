@@ -154,7 +154,28 @@ Findings sống ở scratchpad, **KHÔNG sống trong chat**. Chat chỉ để g
 
 5. **Plan Lens** (xem Skip Rules bên dưới). Đánh dấu ✅ / ⏭️ cho 4 trục.
 
-**Exit**: scratchpad có Context + Framing + Lens Plan → P1.
+6. **Chạy Measurement Scripts** (ngay sau fetch Figma, trước khi vào P1):
+
+   Đọc và thực hiện TỪNG script trong thư mục `scripts/`:
+
+   a. **Contrast Checker** (`scripts/contrast-checker.md`):
+      - Extract cặp (text fill color, parent background color) từ `get_design_context`
+      - Tính contrast ratio WCAG → ghi bảng vào scratchpad
+      - Method: `measured` → Hard Gate H1
+
+   b. **Tap Target Checker** (`scripts/tap-target-checker.md`):
+      - Lọc interactive nodes từ `get_metadata`
+      - Đo width × height từ `absoluteBoundingBox` → ghi bảng vào scratchpad
+      - Method: `measured` → Hard Gate H2
+
+   c. **Spacing Scanner** (`scripts/spacing-scanner.md`):
+      - Thu thập itemSpacing + padding từ auto-layout nodes
+      - Phát hiện magic numbers → ghi bảng vào scratchpad
+      - Method: `measured` → UI-03
+
+   **Output**: 3 bảng kết quả trong scratchpad section `## Measurement Results`.
+
+**Exit**: scratchpad có Context + Framing + Lens Plan + Measurement Results → P1.
 
 ### P1 — Load KB targeted (~2K tokens)
 
@@ -162,10 +183,10 @@ Chỉ load section heuristics/checklist tương ứng lens đã plan. Dùng `gre
 
 | Lens | File + Section |
 |------|---------------|
-| UI | `heuristics.md` §4 Typography, §5 Layout, §6 Color, §7 Interactive States; `checklist.md` B Visual + C Interaction |
-| UX | `heuristics.md` §1 Visibility, §2 Consistency, §3 Navigation, §8 Error Prevention; `checklist.md` C Interaction |
-| Nghiệp vụ | `checklist.md` C Interaction (Edge Cases, Flow Completeness); `jtbd-framework.md` Outcome Metrics |
-| Use-case | `jtbd-framework.md` toàn file; `checklist.md` D JTBD Alignment |
+| UI | `heuristics.md` §4-7; `checklist.md` Trục UI; `scripts/` kết quả measurement |
+| UX | `heuristics.md` §1-3, §8; `checklist.md` Trục UX |
+| Nghiệp vụ | `checklist.md` Trục NV; `jtbd-framework.md` Outcome Metrics |
+| Use-case | `jtbd-framework.md` toàn file; `checklist.md` Trục UC |
 
 **Exit**: KB sections cần thiết đã load → P2.
 
@@ -175,14 +196,18 @@ Chạy lần lượt từng lens ✅. Chạy lens nào, ghi `### Running: [Trụ
 
 #### Lens 1 — UI (Craft)
 
-Kiểm tra:
+**Sử dụng kết quả Measurement Scripts từ P0** (method = `measured`):
+- **Contrast** (Hard Gate H1): Dùng bảng contrast ratio → pass/fail trực tiếp
+- **Tap target** (Hard Gate H2): Dùng bảng tap target size → pass/fail trực tiếp
+- **Spacing** (UI-03): Dùng bảng spacing scanner → liệt kê magic numbers
+
+**Đo bổ sung từ data fetched ở P0** (method = `measured`):
 - Token usage: % element bind variable vs hardcode
-- Contrast WCAG AA: text 4.5:1, large text/UI 3:1, focus indicator 3:1
-- Tap target: ≥44×44pt mobile, ≥24×24 CSS px tối thiểu (WCAG 2.5.8)
 - Type scale: ≤6 distinct font sizes, hierarchy rõ
-- Spacing: 100% theo scale 4/8, 0 magic number (13/17/22)
 - Border radius: ≤3 distinct values
-- 5 interactive states: default / hover / pressed / focused / disabled (variant hoặc frame riêng)
+
+**Inferred** (method = `inferred`):
+- 5 interactive states: default / hover / pressed / focused / disabled
 - Icon: cùng style (outline / filled), size nhất quán
 
 #### Lens 2 — UX (Usability)

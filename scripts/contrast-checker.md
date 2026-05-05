@@ -1,0 +1,121 @@
+# Contrast Checker — Hướng dẫn đo WCAG Contrast Ratio
+
+> Agent đọc file này ở P0/P2 khi cần tính contrast ratio. Thực hiện TỪNG BƯỚC theo thứ tự.
+
+## Mục đích
+
+Chuyển Hard Gate H1 (Contrast WCAG AA) từ `inferred` → `measured` bằng cách tính chính xác contrast ratio từ hex color.
+
+## Khi nào chạy
+
+- **P0**: Sau khi `get_design_context` trả về, extract tất cả text nodes có fill color + parent background color.
+- **P2 Lens 1**: Tính ratio cho từng cặp → ghi kết quả vào scratchpad.
+
+## Bước 1 — Thu thập dữ liệu màu
+
+Từ kết quả `get_design_context`, tìm tất cả **text nodes** và ghi lại:
+
+```
+Mỗi text node cần:
+- Node ID
+- Text content (10 ký tự đầu để nhận diện)
+- Foreground color (fill color của text): hex 6 ký tự, VD: #1A1A1A
+- Background color (fill color của parent container gần nhất): hex 6 ký tự, VD: #FFFFFF
+- Font size (để xác định normal text vs large text)
+```
+
+**Quy tắc xác định background**:
+- Lấy fill color của **parent gần nhất** có fill không transparent
+- Nếu parent có gradient → lấy color stop tối nhất (worst case)
+- Nếu parent không có fill → đệ quy lên parent tiếp → cuối cùng mặc định `#FFFFFF`
+- Nếu text nằm trên ảnh → ghi `bg: image` → chuyển sang `inferred` cho node này
+
+## Bước 2 — Tính Relative Luminance
+
+Với mỗi hex color, tính relative luminance theo công thức WCAG 2.1:
+
+```
+1. Chuyển hex → sRGB (0–255 → 0–1):
+   R_srgb = R_hex / 255
+   G_srgb = G_hex / 255
+   B_srgb = B_hex / 255
+
+2. Chuyển sRGB → linear RGB:
+   Với mỗi channel C (R, G, B):
+   - Nếu C_srgb ≤ 0.04045: C_linear = C_srgb / 12.92
+   - Nếu C_srgb > 0.04045:  C_linear = ((C_srgb + 0.055) / 1.055) ^ 2.4
+
+3. Tính relative luminance:
+   L = 0.2126 × R_linear + 0.7152 × G_linear + 0.0722 × B_linear
+```
+
+## Bước 3 — Tính Contrast Ratio
+
+```
+L1 = luminance cao hơn (lighter color)
+L2 = luminance thấp hơn (darker color)
+
+Contrast Ratio = (L1 + 0.05) / (L2 + 0.05)
+```
+
+Kết quả là số thập phân, VD: `4.72:1`
+
+## Bước 4 — Đánh giá Pass/Fail
+
+| Loại text | WCAG AA (tối thiểu) | WCAG AAA (khuyến nghị) |
+|-----------|---------------------|------------------------|
+| **Normal text** (< 18pt hoặc < 14pt bold) | ≥ 4.5:1 | ≥ 7:1 |
+| **Large text** (≥ 18pt hoặc ≥ 14pt bold) | ≥ 3:1 | ≥ 4.5:1 |
+| **UI component / focus indicator** | ≥ 3:1 | — |
+
+**Quy đổi font size**: 1pt ≈ 1.333px. Vậy 18pt ≈ 24px, 14pt ≈ 18.67px.
+
+## Bước 5 — Ghi kết quả vào Scratchpad
+
+Format ghi:
+
+```markdown
+### Contrast Measurement Results
+
+| # | Node ID | Text (10 char) | FG | BG | Font size | Ratio | AA | Loại |
+|---|---------|----------------|----|----|-----------|-------|----|------|
+| 1 | 123:456 | "Lưu bộ lọc" | #1A1A1A | #FFFFFF | 16px | 12.6:1 | ✅ | normal |
+| 2 | 123:789 | "Bất kỳ nh" | #999999 | #FFFFFF | 14px | 2.85:1 | ❌ | normal |
+| 3 | 124:100 | "Đặt lại" | #FF4444 | #FFFFFF | 16px | 3.94:1 | ❌ | normal |
+
+**Tổng kết**: [n]/[total] text nodes đạt AA = [x]%
+**Method**: measured
+**Hard Gate H1**: [PASS/FAIL] (ngưỡng ≥95%)
+```
+
+## Bước 6 — Tạo Finding (nếu fail)
+
+Nếu % đạt AA < 95%, tạo finding:
+
+```
+🔴 [UI][node-id-worst][unrelated][—][img:F-XXX]: contrast [ratio]:1 < 4.5:1 WCAG AA — [text content]
+```
+
+Chụp ảnh node có contrast thấp nhất bằng `get_screenshot`.
+
+## Ví dụ tính toán
+
+**Input**: Text `#767676` trên nền `#FFFFFF`
+
+```
+1. sRGB: R=0.463, G=0.463, B=0.463
+2. Linear: R=0.179, G=0.179, B=0.179 (> 0.04045 → dùng công thức mũ)
+3. Luminance text: 0.2126×0.179 + 0.7152×0.179 + 0.0722×0.179 = 0.179
+4. Luminance bg (#FFFFFF): 1.0
+
+Contrast = (1.0 + 0.05) / (0.179 + 0.05) = 1.05 / 0.229 = 4.58:1
+
+→ AA normal text: ✅ PASS (4.58 ≥ 4.5)
+→ AAA normal text: ❌ FAIL (4.58 < 7.0)
+```
+
+## Lưu ý
+
+- Nếu có > 50 text nodes → lấy mẫu: tất cả text trên nền không phải trắng/đen + 10 text ngẫu nhiên trên nền trắng
+- Placeholder text (opacity thấp) vẫn cần đạt contrast 4.5:1 vì chứa thông tin (WCAG 1.4.3)
+- Icon text (icon font) xử lý như UI component → ngưỡng 3:1
