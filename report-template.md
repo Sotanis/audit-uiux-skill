@@ -171,7 +171,14 @@ Báo cáo này được tạo bởi agent AI đọc Figma qua MCP — **không t
 
 **Câu chuyện người dùng liên quan**
 
-> Là một [chân dung], tôi muốn [hành động] để [kết quả mong muốn].
+> **BẮT BUỘC**: trích **nguyên văn đầy đủ** user story từ scratchpad (không ghi mỗi mã `US-03`).
+>
+> **User story**: Là một [chân dung], tôi muốn [hành động] để [kết quả mong muốn].
+>
+> **Acceptance criteria (AC)**:
+> - [AC-1 — testable]
+> - [AC-2]
+> - [AC-3]
 
 **Giả thuyết thiết kế tham chiếu**
 

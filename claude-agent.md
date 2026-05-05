@@ -374,7 +374,7 @@ Báo cáo cuối phải đạt: **100% finding 🔴 và 🟡 có ảnh nhúng**.
 
    a. **Thông tin cơ bản**: Severity, hạng mục, bước JTBD bị ảnh hưởng, tần suất × tác động
    b. **Bằng chứng**: Ảnh node lỗi + Node ID + "Mong đợi vs Thực tế" với số đo cụ thể
-   c. **Liên kết JTBD**: User Story bị ảnh hưởng (trích nguyên văn) + Hypothesis đánh giá
+   c. **Liên kết JTBD**: User Story bị ảnh hưởng (**trích nguyên văn + AC từ scratchpad**) + Hypothesis đánh giá
    d. **Phân tích tác động hành vi**: Hành vi → US → Outcome (Speed/Accuracy/Satisfaction)
    e. **Đề xuất khắc phục**: Cụ thể, có thông số (VD: "thêm loading skeleton 3 dòng khi API > 1s")
 
