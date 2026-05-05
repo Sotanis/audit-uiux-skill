@@ -197,6 +197,26 @@ Kiểm tra:
 - **Feedback timing**: <1s (instant) / <3s (loading state) / >3s (progress bar có ETA).
 - **Nielsen 1–10**: visibility, match real world, user control, consistency, error prevention, recognition over recall, flexibility, minimalist, recover from errors, help.
 
+**Sub-checklist bổ sung (scan song song, tạo finding nếu phát hiện):**
+
+UX Writing scan:
+- [ ] Label CTA rõ ràng, đúng hành động (không mơ hồ "Lưu" khi ý là "Áp dụng")
+- [ ] Thuật ngữ nhất quán xuyên suốt (cùng action = cùng label)
+- [ ] Ngôn ngữ phù hợp người dùng mục tiêu (không dùng jargon kỹ thuật/CRM nội bộ khi user là end-user)
+- [ ] Placeholder text đủ rõ, đủ contrast
+- [ ] Microcopy hướng dẫn ở chỗ cần (tooltip, helper text cho field phức tạp)
+
+Platform Consistency scan (Nielsen #4):
+- [ ] Vị trí nút Close/Back đúng chuẩn HIG/Material (× ở top-right, ← ở top-left)
+- [ ] Bottom sheet có drag handle rõ ràng (thanh ngang top, đủ kích thước)
+- [ ] Navigation pattern nhất quán giữa các màn (tab bar, back gesture)
+- [ ] Gesture affordance rõ (swipe, pull-to-refresh nếu applicable)
+
+Layout Efficiency scan:
+- [ ] Không có vùng trống lớn vô nghĩa (>40% viewport trống không có nội dung/hướng dẫn)
+- [ ] Content density phù hợp context (B2B cần thông tin dày hơn B2C)
+- [ ] CTA position nhất quán giữa các màn cùng luồng
+
 #### Lens 3 — Nghiệp vụ (Business Logic)
 
 **Đây là lens dễ bị bỏ qua nhất.** Kiểm tra:
@@ -208,6 +228,10 @@ Kiểm tra:
 - **Trust signals** ở bước nhạy cảm (thanh toán, nhập PII).
 - **Audit trail / history**: action quan trọng có log để user/admin tra cứu?
 - **Confirmation cho action không reversible**: kèm summary (cái gì, ai, bao nhiêu, khi nào).
+
+**⚠️ Cross-check Hard Gate H7 ngay tại đây:**
+Scan TẤT CẢ button/action trong scope có label chứa: "Đặt lại" / "Reset" / "Xóa" / "Delete" / "Hủy bỏ" / "Gửi" / "Submit" / "Chuyển" / "Transfer" / "Remove".
+Nếu bất kỳ action nào KHÔNG có confirmation dialog hoặc undo affordance → tạo finding 🔴 VÀ flag Hard Gate H7 FAIL trong scratchpad. Không được bỏ sót.
 
 #### Lens 4 — Use-case (JTBD Coverage)
 
@@ -295,8 +319,50 @@ Báo cáo cuối phải đạt: **100% finding 🔴 và 🟡 có ảnh nhúng**.
 6. **Quyết định cuối** = giá trị thấp nhất trong 3 gate.
 7. **Liệt kê items `out_of_scope`** vào §"Khuyến nghị test sau bàn giao" trong báo cáo.
 8. **Expand compressed finding** → prose tiếng Việt theo `report-template.md`.
-9. **Sắp xếp**: Gate Decision Box trước, sau đó Framing, sau đó 🔴 → 🟡 → 🟢.
-10. **Xuất 2 file**: `bao-cao.md` + `bao-cao.html` (ảnh base64), thư mục `~/Downloads/audit-report-<screen>-<YYYY-MM-DD>/`.
+
+   **BẮT BUỘC cho mỗi finding 🔴/🟡 — KHÔNG ĐƯỢC bỏ qua bất kỳ mục nào:**
+
+   a. **Thông tin cơ bản**: Severity, hạng mục, bước JTBD bị ảnh hưởng, tần suất × tác động
+   b. **Bằng chứng**: Ảnh node lỗi + Node ID + "Mong đợi vs Thực tế" với số đo cụ thể
+   c. **Liên kết JTBD**: User Story bị ảnh hưởng (trích nguyên văn) + Hypothesis đánh giá
+   d. **Phân tích tác động hành vi**: Hành vi → US → Outcome (Speed/Accuracy/Satisfaction)
+   e. **Đề xuất khắc phục**: Cụ thể, có thông số (VD: "thêm loading skeleton 3 dòng khi API > 1s")
+
+   ❌ CẤM xuất báo cáo mà finding 🔴/🟡 chỉ có 1 dòng compressed
+   ❌ CẤM đề xuất chung chung ("cần cải thiện", "nên thêm state")
+
+9. **Điền Score Breakdown Table**: Với mỗi item (38 items + 11 Hard Gate), ghi pass/fail + method + ghi chú cụ thể.
+10. **Viết Nhận xét tổng quan UI/UX**: ≥2 điểm mạnh + ≥2 nguyên nhân gốc rễ điểm thấp + Ma trận Effort × Impact.
+11. **Sắp xếp**: Gate Decision Box → Score Breakdown → Nhận xét tổng quan → Framing → 🔴 → 🟡 → 🟢 → UX Writing → UX Flow → Khuyến nghị → Ghi chú dev → Bảng thuật ngữ.
+12. **Xuất 2 file**: `bao-cao.md` + `bao-cao.html` (ảnh base64), thư mục `~/Downloads/audit-report-<screen>-<YYYY-MM-DD>/`.
+
+### P3 Validation Checklist — BẮT BUỘC trước khi xuất bao-cao.md
+
+Agent PHẢI tự kiểm tra TỪNG mục. Nếu bất kỳ mục nào ❌ → sửa ngay, KHÔNG xuất file.
+
+**Cấu trúc báo cáo:**
+- [ ] Gate Decision Box đủ: 4 trục + 3 tầng gate + hành động bắt buộc + khoảng cách đến READY
+- [ ] Score Breakdown Table: TỪNG item (38 + 11 HG) có pass/fail + method + ghi chú
+- [ ] Nhận xét tổng quan UI/UX: ≥2 điểm mạnh + ≥2 nguyên nhân gốc rễ
+- [ ] Ma trận Effort × Impact
+
+**Findings:**
+- [ ] Mỗi finding 🔴/🟡 đủ 5 mục (a–e)
+- [ ] Đề xuất sửa có thông số cụ thể
+- [ ] 100% finding 🔴/🟡 có ảnh nhúng
+
+**Sections bắt buộc:**
+- [ ] Bối cảnh JTBD (Job Map table)
+- [ ] Phân tích UX Writing (5 hạng mục)
+- [ ] Phân tích UX Flow (số bước, dead-end, escape hatch)
+- [ ] Khuyến nghị trước bàn giao (P0/P1/P2)
+- [ ] Ghi chú cho dev (≥3 mục)
+- [ ] Khuyến nghị test sau bàn giao
+- [ ] Bảng thuật ngữ
+
+**Consistency:**
+- [ ] Severity count trong Gate Decision Box KHỚP với bảng finding
+- [ ] Tổng P0/P1/P2 đếm đúng
 
 ### P4 — Apply fix (gated, optional)
 
