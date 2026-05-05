@@ -191,7 +191,12 @@ Findings sống ở scratchpad, **KHÔNG sống trong chat**. Chat chỉ để g
 
 5. **Plan Lens** (xem Skip Rules bên dưới). Đánh dấu ✅ / ⏭️ cho 4 trục.
 
-6. **Chạy Measurement Scripts** (ngay sau fetch Figma, trước khi vào P1):
+6. **Chạy Naming Scanner và Auto-Fix** (BẮT BUỘC):
+   - Đọc và làm theo hướng dẫn tại [scripts/naming-scanner.md](scripts/naming-scanner.md).
+   - Nếu phát hiện layer sai chuẩn $\rightarrow$ DỪNG LUỒNG, in bảng Alert đề xuất tên chuẩn và chờ lệnh từ user.
+   - Khi user duyệt $\rightarrow$ dùng tool Figma MCP sửa tên trực tiếp $\rightarrow$ lấy lại metadata $\rightarrow$ đi tiếp.
+
+7. **Chạy Measurement Scripts** (ngay sau khi tên đã chuẩn hóa, trước khi vào P1):
 
    Đọc và thực hiện TỪNG script trong thư mục [scripts/](scripts/):
 
