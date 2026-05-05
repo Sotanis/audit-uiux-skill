@@ -191,56 +191,7 @@ Findings sống ở scratchpad, **KHÔNG sống trong chat**. Chat chỉ để g
 
 5. **Plan Lens** (xem Skip Rules bên dưới). Đánh dấu ✅ / ⏭️ cho 4 trục.
 
-6. **Chạy Naming Scanner và Auto-Fix** (BẮT BUỘC):
-   - Đọc và làm theo hướng dẫn tại [scripts/naming-scanner.md](scripts/naming-scanner.md).
-   - Nếu phát hiện layer sai chuẩn $\rightarrow$ DỪNG LUỒNG, in bảng Alert đề xuất tên chuẩn và chờ lệnh từ user.
-   - Khi user duyệt $\rightarrow$ dùng tool Figma MCP sửa tên trực tiếp $\rightarrow$ lấy lại metadata $\rightarrow$ đi tiếp.
-
-7. **Chạy Measurement Scripts** (ngay sau khi tên đã chuẩn hóa, trước khi vào P1):
-
-   Đọc và thực hiện TỪNG script trong thư mục [scripts/](scripts/):
-
-   a. **Contrast Checker** ([scripts/contrast-checker.md](scripts/contrast-checker.md)):
-      - Extract tất cả cặp (text fill color, parent background color) từ `get_design_context`
-      - Tính contrast ratio theo công thức WCAG → ghi bảng kết quả vào scratchpad
-      - Method: `measured` → dùng cho Hard Gate H1
-
-   b. **Tap Target Checker** ([scripts/tap-target-checker.md](scripts/tap-target-checker.md)):
-      - Lọc interactive nodes từ `get_metadata` (button, icon, input, link...)
-      - Đo width × height từ `absoluteBoundingBox` → ghi bảng kết quả vào scratchpad
-      - Method: `measured` → dùng cho Hard Gate H2
-
-   c. **Spacing Scanner** ([scripts/spacing-scanner.md](scripts/spacing-scanner.md)):
-      - Thu thập itemSpacing + padding từ auto-layout nodes
-      - Phát hiện magic numbers (giá trị ngoài spacing scale) → ghi bảng vào scratchpad
-      - Method: `measured` → dùng cho UI-03
-
-   d. **UX State Scanner** ([scripts/ux-state-scanner.md](scripts/ux-state-scanner.md)):
-      - Quét coverage các state `loading/empty/error/success` theo nhiều tín hiệu (tên layer + text + pattern)
-      - Xuất bảng coverage theo screen/frame + nodeId evidence
-      - Dùng để giảm miss cho Hard Gate H4/H5/H6 và checklist UX-05/06/07
-
-   e. **Destructive Action Scanner** ([scripts/destructive-action-scanner.md](scripts/destructive-action-scanner.md)):
-      - Quét các action nguy hiểm (delete/reset/cancel/submit/transfer) theo label/text
-      - Đối chiếu evidence confirmation dialog hoặc undo affordance
-      - Dùng để giảm miss cho Hard Gate H7 và checklist UX-10
-
-   f. **UX Flow Scanner** ([scripts/ux-flow-scanner.md](scripts/ux-flow-scanner.md)):
-      - Nếu có prototype links: dựng flow graph để tìm dead-end/escape hatch (confidence high)
-      - Nếu không có: tạo danh sách dead-end candidates (confidence low/medium, bắt buộc ghi rõ)
-      - Dùng để tăng chất lượng check UX-08/UX-09, đặc biệt khi audit flow
-
-   g. **UX Writing Lint** ([scripts/ux-writing-lint.md](scripts/ux-writing-lint.md)):
-      - Quét microcopy/CTA/error message theo rule, xuất bảng nodeId + rule violated
-      - Dùng để tăng độ nhất quán cho phân tích UX Writing và giảm bỏ sót UX-07 (error message quality)
-
-   h. **Friction Scanner** ([scripts/friction-scanner.md](scripts/friction-scanner.md)):
-      - Proxy đo “decision overload”/CTA density để hỗ trợ UX-02 (cognitive load)
-      - Dùng để phát hiện friction hotspots (quá nhiều quyết định trên viewport đầu)
-
-   **Output**: tối thiểu 3 bảng đo `measured` (contrast/tap target/spacing) + các bảng scan UX (state/destructive/flow/writing/friction) trong scratchpad section `## Measurement Results`.
-
-**Exit**: scratchpad có Context + Framing + Lens Plan + Measurement Results → P1.
+**Exit**: scratchpad có Context + Framing + Lens Plan → P1.
 
 ### P1 — Load KB targeted (~1.5–2K tokens)
 
@@ -248,7 +199,7 @@ Chỉ load section heuristics/checklist tương ứng lens đã plan.
 
 | Lens | File + Section |
 |------|---------------|
-| UI | `heuristics.md` §4 Typography, §5 Layout, §6 Color, §7 Interactive States; `checklist.md` Trục UI; `scripts/` kết quả measurement |
+| UI | `heuristics.md` §4 Typography, §5 Layout, §6 Color, §7 Interactive States; `checklist.md` Trục UI |
 | UX | `heuristics.md` §1 Visibility, §2 Consistency, §3 Navigation, §8 Error Prevention; `checklist.md` Trục UX |
 | Nghiệp vụ | `checklist.md` Trục NV; `jtbd-framework.md` Outcome Metrics |
 | Use-case | `jtbd-framework.md` toàn file; `checklist.md` Trục UC |
@@ -261,16 +212,9 @@ Chạy lần lượt từng lens ✅. Chạy lens nào, ghi `### Running: [Trụ
 
 #### Lens 1 — UI (Craft) — 11 items active
 
-Áp checklist Trục UI trong [checklist.md](checklist.md). Mỗi item: pass/fail + method tag.
-
-**Sử dụng kết quả Measurement Scripts từ P0** (method = `measured`):
-- **Contrast** (Hard Gate H1): Dùng bảng contrast ratio từ P0 → pass/fail trực tiếp
-- **Tap target** (Hard Gate H2): Dùng bảng tap target size từ P0 → pass/fail trực tiếp
-- **Spacing** (UI-03): Dùng bảng spacing scanner từ P0 → liệt kê magic numbers
-
-**Đo bổ sung từ data fetched ở P0** (method = `measured`):
+Áp checklist Trục UI trong [checklist.md](checklist.md). Mỗi item: pass/fail + method tag. Đo trực tiếp từ data fetched ở P0:
 - Token usage (UI-01, UI-02): % element bind variable vs hardcode
-- Border radius (UI-05), color palette (UI-06): đếm distinct values
+- Spacing (UI-03), border radius (UI-05), color palette (UI-06): đếm distinct values
 - Type hierarchy (UI-04): đếm distinct font sizes
 - Auto-layout (UI-08), constraint (UI-09): từ metadata
 - Icon (UI-07), state coverage (UI-10, UI-11): inferred từ naming/variants

@@ -46,8 +46,8 @@ Vi phạm **bất kỳ 1 mục** dưới đây → **BLOCKED**, dừng compute t
 
 | ID | Mục | Ngưỡng | Method | Ghi chú |
 |----|-----|--------|--------|---------|
-| H1 | Contrast WCAG AA | ≥95% text element đạt 4.5:1 (normal) hoặc 3:1 (large ≥18pt hoặc 14pt bold) | `measured` | Tính bằng công thức WCAG từ hex color pairs (xem `scripts/contrast-checker.md`). Agent walk hierarchy tìm bg fill. |
-| H2 | Tap target | ≥95% interactive element đạt 24×24 CSS px (WCAG 2.5.8). Mobile khuyến nghị 44×44pt | `measured` | Đo absoluteBoundingBox từ metadata (xem `scripts/tap-target-checker.md`). Nhận diện interactive qua naming + component type. |
+| H1 | Contrast WCAG AA | ≥95% text element đạt 4.5:1 (normal) hoặc 3:1 (large ≥18pt hoặc 14pt bold) | `inferred` | Đo trên text-on-background; agent phải walk hierarchy để tìm bg fill, có thể sai khi background nhiều layer |
+| H2 | Tap target | ≥95% interactive element đạt 24×24 CSS px (WCAG 2.5.8). Mobile khuyến nghị 44×44pt | `inferred` | Cần nhận diện đâu là "interactive" — Figma không tag rõ button vs frame, dựa naming + component |
 | H3 | Primary CTA | Tồn tại + visible above fold + duy nhất / màn | `inferred` | Phải phân biệt primary vs secondary qua style; multiple primary CTA → user phân vân, fail |
 | H4 | Empty state | Mọi list / data view có empty state | `inferred` | Phụ thuộc layer naming/variant naming; nếu thiếu convention → có thể miss |
 | H5 | Error state | Mọi form input + mọi async action có error state | `inferred` | Cùng phụ thuộc naming/variant |
@@ -58,7 +58,7 @@ Vi phạm **bất kỳ 1 mục** dưới đây → **BLOCKED**, dừng compute t
 | H10 | Hardcoded color | ≤10% color không bind variable / token | `measured` | get_variable_defs cho biết bind hay không |
 | H11 | Auto-layout | ≥80% container dùng auto-layout (không absolute positioning) | `measured` | Metadata có layoutMode |
 
-**Tổng hard gate**: 11 items — 6 `measured` + 5 `inferred`. Báo cáo BLOCKED phải nói rõ item nào đo chính xác, item nào ước lượng.
+**Tổng hard gate**: 11 items — 4 `measured` + 7 `inferred`. Báo cáo BLOCKED phải nói rõ item nào đo chính xác, item nào ước lượng.
 
 ### Tính toán Hard Gate
 

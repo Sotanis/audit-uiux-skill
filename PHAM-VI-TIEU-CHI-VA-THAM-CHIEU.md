@@ -24,7 +24,6 @@ Tài liệu mô tả **phạm vi** skill **Audit UI/UX**, **nguồn thông tin**
 | **Xuất báo cáo** | Tiếng Việt, theo [report-template.md](report-template.md), có **bảng thuật ngữ** + **Khuyến nghị test sau bàn giao** cho items `out_of_scope`. |
 | **Hỏi bổ sung có kiểm soát** | Tối đa **3 câu** (chân dung, công việc, tiêu chí thành công) khi thiếu — xem [SKILL.md — Cơ chế hỏi bổ sung](SKILL.md). |
 | **COOK NOW (tùy chọn)** | Sửa trực tiếp Figma theo checklist user chọn — backup trước, batch nhỏ, ảnh trước/sau. |
-| **UX scanners (evidence-driven)** | Quét state coverage, destructive confirm/undo, dead-end/escape hatch để giảm “miss” khi đánh giá UX trên thiết kế tĩnh. Output là bảng evidence nodeId + confidence (high/medium/low). |
 
 ### 1.2 Ngoài phạm vi (agent không cam kết hoặc chỉ hỗ trợ một phần)
 
@@ -71,9 +70,6 @@ Công cụ cụ thể phụ thuộc máy chủ MCP bạn cài; danh mục đầy
 | [jtbd-framework.md](jtbd-framework.md) | Bản đồ công việc, mẫu câu chuyện người dùng, giả thuyết, ánh xạ bước → loại vấn đề UX |
 | [report-template.md](report-template.md) | Khung báo cáo tiếng Việt, Gate Decision Box, Khuyến nghị test sau bàn giao, bảng thuật ngữ |
 | [html-template.md](html-template.md) | Hướng dẫn xuất HTML có ảnh nhúng base64 |
-| [scripts/ux-state-scanner.md](scripts/ux-state-scanner.md) | Quét coverage `loading/empty/error/success` theo evidence để tăng chất lượng UX-05/06/07 và H4/H5/H6 |
-| [scripts/destructive-action-scanner.md](scripts/destructive-action-scanner.md) | Quét destructive actions và đối chiếu confirmation/undo evidence (H7, UX-10) |
-| [scripts/ux-flow-scanner.md](scripts/ux-flow-scanner.md) | Quét flow dead-end/escape hatch/continuity; ưu tiên prototype links, fallback có confidence |
 
 ### 2.3 Nguồn từ người dùng (prompt)
 
@@ -175,14 +171,6 @@ Quyết định cuối = MIN(3 tầng)
 ### 3.6 Ma trận tần suất × tác động
 
 Dùng kết hợp với P0–P2: lỗi **hay gặp + hậu quả lớn** → ưu tiên cao nhất trong báo cáo và khuyến nghị. Tần suất thường là **giả định** nếu không có dữ liệu sản phẩm trong prompt.
-
----
-
-## 3.7 Ghi chú độ tin cậy cho UX flow/state
-
-- Nếu **có prototype links** trong metadata, các kết luận về flow (dead-end/continuity) có thể đạt **confidence high**.
-- Nếu **không có prototype links**, agent chỉ được kết luận ở mức **candidate** và phải ghi rõ confidence `low/medium` trong scratchpad/báo cáo (không giả vờ “đo được”).
-- Với state coverage (loading/empty/error/success), ưu tiên evidence từ **frame/variant rõ ràng**; nếu chỉ thấy “toast-only” hoặc keyword mơ hồ → đánh dấu ⚠️ và khuyến nghị bổ sung frame/variant để hand-off không mập mờ.
 
 ---
 

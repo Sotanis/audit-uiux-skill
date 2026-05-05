@@ -209,8 +209,6 @@ Báo cáo này được tạo bởi agent AI đọc Figma qua MCP — **không t
 
 *(Chi tiết từng vấn đề nằm trong phần Chi tiết phát hiện, gắn mã F-XXX)*
 
-> Gợi ý (nếu có dữ liệu scan): có thể đính kèm bảng `UX Writing Lint Results (Scanner)` từ `scripts/ux-writing-lint.md` vào scratchpad và trích các dòng vi phạm rule quan trọng (UXW-ERR-01/02/03, UXW-CTA-01, UXW-EMP-01) để tăng tính nhất quán.
-
 ---
 
 ## Phân tích UX Flow
@@ -226,8 +224,6 @@ Báo cáo này được tạo bởi agent AI đọc Figma qua MCP — **không t
 | **Lưu tiến trình** | [Có / Không] |
 
 *(Chi tiết từng vấn đề nằm trong phần Chi tiết phát hiện, gắn mã F-XXX)*
-
-> Gợi ý (nếu có dữ liệu scan): trích bảng `UX Flow Scan Results (Scanner)` + `Journey Map (Proxy)` từ `scripts/ux-flow-scanner.md` để mô tả dead-end/escape hatch và continuity theo evidence nodeId.
 
 ---
 
