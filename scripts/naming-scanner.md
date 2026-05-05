@@ -40,7 +40,7 @@ Dưới đây là danh sách đề xuất chuẩn hóa:
 ## Bước 3 — Chờ Duyệt và Sửa Trực Tiếp (Apply Fix)
 1. Agent chờ user phản hồi.
 2. Nếu user gõ "Đồng ý" (hoặc các lệnh tương đương):
-   - Agent lập tức gọi công cụ Ghi của Figma MCP (ví dụ: `update_node_name`, `use_figma` hoặc các endpoint có quyền sửa file) để **đổi tên các layer theo đúng cột "Đề xuất đổi thành"**.
+   - Agent gọi công cụ `use_figma` của Figma MCP để thao tác trực tiếp trên canvas. Agent sẽ gửi lệnh đổi tên (`rename`) các layer có Node ID tương ứng theo đúng cột "Đề xuất đổi thành".
 3. Nếu user yêu cầu bỏ qua 1 layer nào đó: Cập nhật lại danh sách theo ý user và đổi tên các layer còn lại.
 
 ## Bước 4 — Resume Audit
