@@ -154,10 +154,13 @@ Findings sống ở scratchpad, **KHÔNG sống trong chat**. Chat chỉ để g
 
 5. **Plan Lens** (xem Skip Rules bên dưới). Đánh dấu ✅ / ⏭️ cho 4 trục.
 
-6. **Chạy Naming Scanner và Auto-Fix** (BẮT BUỘC):
+6. **Chạy Naming Scanner và Auto-Fix** (BẮT BUỘC — không có exception):
    - Đọc và làm theo hướng dẫn tại `scripts/naming-scanner.md`.
-   - Nếu phát hiện layer sai chuẩn $\rightarrow$ DỪNG LUỒNG, in bảng Alert đề xuất tên chuẩn và chờ lệnh từ user.
-   - Khi user duyệt $\rightarrow$ dùng tool Figma MCP sửa tên trực tiếp $\rightarrow$ lấy lại metadata $\rightarrow$ đi tiếp.
+   - Nếu phát hiện layer sai chuẩn → DỪNG LUỒNG, in bảng Alert đề xuất tên chuẩn và chờ lệnh từ user.
+   - Khi user duyệt → dùng tool Figma MCP sửa tên trực tiếp → lấy lại metadata → đi tiếp.
+   - **Skip rule**: chỉ được skip nếu user *chủ động* nói "skip naming" / "không sửa naming" — agent KHÔNG tự skip vì lý do "có vẻ chuẩn rồi".
+   - **Hệ quả khi skip**: ghi vào scratchpad "Naming scanner SKIPPED — user opt-out". Trong báo cáo P3, các items phụ thuộc naming convention (H4/H5/H6, UX-05/06/07) bị **hạ confidence từ ±15% xuống ±25%** và đánh dấu `[naming uncertain]`.
+   - **Nếu user không phản hồi sau khi Alert**: KHÔNG tự đoán đồng ý / không đi tiếp; chờ. Đây là gate bảo vệ chất lượng, không phải step có thể bypass.
 
 7. **Chạy Measurement Scripts** (ngay sau khi tên đã chuẩn hóa, trước khi vào P1):
 
@@ -442,6 +445,9 @@ Skip phải ghi lý do trong scratchpad. Khi nghi ngờ → chạy mặc định
 - ❌ Đóng bằng "Cho tôi biết nếu cần thêm" — dừng khi xong
 - ❌ Tính % cho item `out_of_scope` — phải loại khỏi mẫu số
 - ❌ Trộn `measured` và `inferred` lẫn lộn không tag — báo cáo phải minh bạch method
+- ❌ Bỏ qua naming scanner ở P0 step 6 vì "có vẻ chuẩn rồi" — chỉ user mới được opt-out
+- ❌ Tự promote item `inferred` thành `measured` mà chưa có script accuracy ≥95% — tạo false confidence
+- ❌ Cố ép inferred ratio xuống <30% trong báo cáo nếu phương pháp vốn là heuristic — floor là tự nhiên
 
 ## Output rules
 

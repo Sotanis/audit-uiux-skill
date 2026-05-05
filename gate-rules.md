@@ -308,6 +308,43 @@ HAND-OFF DECISION: [READY / READY WITH NOTES / NEEDS REWORK / BLOCKED]
 
 ---
 
+## Inferred Floor — ranh giới tự nhiên của phương pháp
+
+**Mục tiêu inferred floor: ~30%** trên tổng items active. **Không** cố ép xuống thấp hơn nếu chưa có script đo độc lập đạt accuracy ≥95% trên tập sample test.
+
+### Vì sao có floor
+
+Một số items có bản chất **định tính**, không thể convert sang `measured` dù đầu tư script:
+
+| Item | Vì sao không promote được |
+|------|---------------------------|
+| UC-01 JTBD rõ ràng | Đánh giá ngữ nghĩa của brief — không có công thức |
+| UC-03 AC testable | Đánh giá chất lượng văn bản |
+| UC-06 Hypothesis có bằng chứng | Đánh giá nguồn cite có hợp lý |
+| UX-08 Dead-end | Cần walk prototype graph với semantic mỗi node |
+| NV-01 Happy path coverage | Cần map job step → frame, semantic |
+| H3 Primary CTA duy nhất | Phân biệt primary vs secondary qua style — judgment |
+| H7 Destructive có confirm | Cross-frame analysis với semantic mỗi action |
+
+Cố convert những items này sẽ tạo **false confidence** — script báo "100% pass" trong khi thực tế designer đặt tên `_empty` cho frame không phải empty state.
+
+### Quy tắc promote `inferred` → `measured`
+
+Trước khi đổi nhãn 1 item từ `inferred` sang `measured`, **bắt buộc**:
+
+1. Có **script đo cụ thể** trong `scripts/` (như `contrast-checker.md`, `tap-target-checker.md`)
+2. **Test trên tập sample** ≥20 frames thật, ghi precision/recall
+3. **Accuracy ≥95%** mới được promote — dưới ngưỡng này, giữ `inferred` honest hơn `measured` sai
+4. **Document** điều kiện script work (naming convention, MCP version) trong header script
+
+### Báo cáo trung thực hơn điểm đẹp
+
+`measured` cao + `inferred` thấp đáng tin hơn báo cáo "100% measured" nhưng nửa là script lỗi. Designer/dev đọc gate quyết định bàn giao — họ cần biết cái gì agent **đo được** vs cái gì agent **đoán có sai số**.
+
+Nếu một review có 70% `measured` + 30% `inferred` → đó là **trạng thái khỏe mạnh**, không phải thiếu sót.
+
+---
+
 ## Quy tắc tinh thần
 
 - **MIN, không AVERAGE**: 1 trục yếu kéo cả thiết kế. Tránh "trục mạnh đỡ trục yếu".
@@ -315,4 +352,5 @@ HAND-OFF DECISION: [READY / READY WITH NOTES / NEEDS REWORK / BLOCKED]
 - **Hard gate không thương lượng**: contrast, tap target, error/empty state thiếu — không có chỗ cho "ship trước, fix sau" trong những thứ này.
 - **Severity gate chống "điểm cao gian lận"**: 1 P0 chí mạng vô hiệu mọi điểm số. Tránh tình huống "82% tổng nhưng không gửi được tiền".
 - **Trung thực với phương pháp**: nếu item là `inferred` thì ghi rõ; nếu `out_of_scope` thì đừng giả vờ đo được trên design tĩnh. Báo cáo `measured` cao + `inferred` thấp đáng tin hơn báo cáo điểm số đẹp nhưng toàn ước lượng.
+- **Inferred floor ~30%**: không cố ép xuống thấp hơn nếu chưa có script accuracy ≥95%. Floor là ranh giới tự nhiên của heuristic evaluation, không phải failure.
 - **Khoảng cách đến READY** phải hiển thị trong Gate Decision Box: designer biết cần +bao nhiêu điểm ở trục nào → action rõ ràng.
