@@ -215,7 +215,22 @@ Findings sống ở scratchpad, **KHÔNG sống trong chat**. Chat chỉ để g
       - Phát hiện magic numbers (giá trị ngoài spacing scale) → ghi bảng vào scratchpad
       - Method: `measured` → dùng cho UI-03
 
-   **Output**: 3 bảng kết quả trong scratchpad section `## Measurement Results`, method = `measured`.
+   d. **UX State Scanner** ([scripts/ux-state-scanner.md](scripts/ux-state-scanner.md)):
+      - Quét coverage các state `loading/empty/error/success` theo nhiều tín hiệu (tên layer + text + pattern)
+      - Xuất bảng coverage theo screen/frame + nodeId evidence
+      - Dùng để giảm miss cho Hard Gate H4/H5/H6 và checklist UX-05/06/07
+
+   e. **Destructive Action Scanner** ([scripts/destructive-action-scanner.md](scripts/destructive-action-scanner.md)):
+      - Quét các action nguy hiểm (delete/reset/cancel/submit/transfer) theo label/text
+      - Đối chiếu evidence confirmation dialog hoặc undo affordance
+      - Dùng để giảm miss cho Hard Gate H7 và checklist UX-10
+
+   f. **UX Flow Scanner** ([scripts/ux-flow-scanner.md](scripts/ux-flow-scanner.md)):
+      - Nếu có prototype links: dựng flow graph để tìm dead-end/escape hatch (confidence high)
+      - Nếu không có: tạo danh sách dead-end candidates (confidence low/medium, bắt buộc ghi rõ)
+      - Dùng để tăng chất lượng check UX-08/UX-09, đặc biệt khi audit flow
+
+   **Output**: tối thiểu 3 bảng đo `measured` (contrast/tap target/spacing) + 3 bảng scan UX (state/destructive/flow) trong scratchpad section `## Measurement Results`.
 
 **Exit**: scratchpad có Context + Framing + Lens Plan + Measurement Results → P1.
 
