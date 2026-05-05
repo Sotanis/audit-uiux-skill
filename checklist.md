@@ -57,6 +57,11 @@ Nielsen heuristics, hierarchy, flow, feedback, error prevention, navigation.
 
 **Ngưỡng pass UX**: ≥80% = ≥8/9 items active. **Toàn `inferred`** → ghi confidence ±10–15%.
 
+Gợi ý tăng độ tin cậy khi audit UX:
+- UX-07: ưu tiên dùng `scripts/ux-writing-lint.md` để liệt kê nodeId + rule violated (giảm bỏ sót).
+- UX-02: ưu tiên dùng `scripts/friction-scanner.md` để tính proxy score nhất quán.
+- UX-08/UX-09: ưu tiên dùng `scripts/ux-flow-scanner.md` và ghi rõ confidence khi thiếu prototype links.
+
 ---
 
 ## Trục Nghiệp vụ (Business Logic) — 10 items active

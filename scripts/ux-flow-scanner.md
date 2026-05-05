@@ -6,6 +6,7 @@
 
 - Dựng “flow map” tối thiểu từ scope hiện có.
 - Tìm **dead-end candidates** và thiếu **escape hatch** theo evidence.
+- Xuất **journey map** dạng bảng (screen → action → next → expected feedback) để report dễ hành động.
 - Tránh kết luận sai khi chỉ nhìn 1 screenshot/frame.
 
 ## Khi nào chạy
@@ -74,6 +75,17 @@ Trong Mode B, chỉ đánh **⚠️ candidate**, không kết luận fail chắc
 | `Checkout` (12:34) | ✅ back:`56:78` | → `Confirm` | low | back nodeId |
 | `Confirm` (90:12) | ❌ | (none) | ⚠️ high | no back/close, no link |
 ```
+
+### Journey Map (Proxy)
+
+| Step | Screen (id) | Primary action | Expected feedback/state | Next screen | Notes |
+|------|-------------|----------------|--------------------------|------------|-------|
+| 1 | `Checkout` (12:34) | `CTA_Primary` (11:22) | loading → success/ error | `Confirm` | if error: show retry |
+| 2 | `Confirm` (90:12) | `Xác nhận` (33:44) | success toast + redirect | `Success` | missing escape hatch? |
+
+Rules:
+- Nếu thiếu prototype links: điền “Next screen” theo user-provided order hoặc để `—` và đánh confidence low.
+- “Expected feedback/state” phải align với UX-05/06/07 và state coverage scan.
 
 ## Bước 6 — Mapping sang checklist
 

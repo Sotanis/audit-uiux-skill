@@ -190,7 +190,15 @@ Findings sống ở scratchpad, **KHÔNG sống trong chat**. Chat chỉ để g
       - Dựng flow map (prototype link nếu có) để tìm dead-end/escape hatch
       - Dùng để tăng chất lượng UX-08/UX-09
 
-   **Output**: 3 bảng đo (contrast/tap target/spacing) + 3 bảng scan UX (state/destructive/flow) trong `## Measurement Results`.
+   g. **UX Writing Lint** (`scripts/ux-writing-lint.md`):
+      - Quét microcopy/CTA/error message theo rule, xuất bảng nodeId + rule violated
+      - Dùng để tăng chất lượng UX Writing và giảm bỏ sót UX-07
+
+   h. **Friction Scanner** (`scripts/friction-scanner.md`):
+      - Proxy đo decision overload/CTA density để hỗ trợ UX-02 (cognitive load)
+      - Dùng để phát hiện friction hotspots ở viewport đầu
+
+   **Output**: 3 bảng đo (contrast/tap target/spacing) + các bảng scan UX (state/destructive/flow/writing/friction) trong `## Measurement Results`.
 
 **Exit**: scratchpad có Context + Framing + Lens Plan + Measurement Results → P1.
 
