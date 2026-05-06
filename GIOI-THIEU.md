@@ -265,6 +265,43 @@ Khi giới hạn áp dụng, agent ghi rõ trong phần ghi chú cuối báo cá
 
 ---
 
+## Độ tin cậy & sai lệch giữa các lần chạy
+
+> **⚠️ Lưu ý**: Các con số dưới đây là **ước tính lý thuyết** dựa trên cấu trúc agent (tỷ lệ `measured` vs `inferred`, độ đồng bộ brain file). Chưa có dữ liệu thực nghiệm từ benchmark trên file Figma chuẩn hóa. Khuyến nghị team chạy F2–F5 trong [SELF-TEST-BAO-CAO.md](SELF-TEST-BAO-CAO.md) để xác nhận.
+
+### Sai lệch giữa Cursor và Claude Code (cùng design, cùng model)
+
+Agent dùng 2 brain file riêng: `SKILL.md` (Cursor) và `claude-agent.md` (Claude Code). Hai file đã được đồng bộ nội dung (xem changelog), khác nhau chủ yếu ở frontmatter và đường dẫn tham chiếu.
+
+| Trục | Measured / Inferred | Sai lệch ước tính |
+|------|--------------------|--------------------|
+| **UI** (11 items) | 8 / 3 | ±2–3% |
+| **UX** (9 items) | 0 / 9 | ±8–12% |
+| **Nghiệp vụ** (10 items) | 0 / 10 | ±8–12% |
+| **Use-case** (8 items) | 1 / 7 | ±7–10% |
+| **Tổng điểm trục** | — | **±3–5%** |
+| **Quyết định cuối** | — | ~5% nguy cơ khác kết luận (khi trục ở biên 78–82%) |
+
+### Sai lệch giữa các lần chạy (cùng platform, cùng design)
+
+Do LLM non-deterministic, kết quả `inferred` items có thể thay đổi giữa các lần chạy:
+
+| Loại items | Sai lệch | Giải thích |
+|------------|----------|------------|
+| **Measured** (13/38 items) | ~0% | Deterministic: cùng Figma data + cùng công thức scanner → cùng kết quả |
+| **Inferred** (25/38 items) | ±10–15% | Agent judgment thay đổi giữa các lần; `gate-rules.md` quy định ghi rõ sai số này |
+| **Tổng điểm trục** | **±5–8%** | Trung bình có trọng số measured + inferred |
+| **Quyết định cuối** | ~10% nguy cơ khác | Chỉ xảy ra khi trục đang ở biên 76–84% |
+
+### Giảm sai lệch
+
+- **Measured items càng nhiều → sai lệch càng thấp.** 10 scanner scripts đã nâng tỷ lệ measured lên 13/38 items + 6/11 Hard Gate.
+- **Trục UI** có sai lệch thấp nhất (73% measured) — đáng tin nhất.
+- **Trục UX và Nghiệp vụ** có sai lệch cao nhất (100% inferred) — cần đọc kèm cảnh báo confidence ±10–15% trong báo cáo.
+- Khi trục ở **biên quyết định** (78–82%), khuyến nghị chạy audit **2 lần** và lấy kết quả conservative (thấp hơn).
+
+---
+
 ## Khác biệt so với phiên bản cũ
 
 | Trước | Sau |
