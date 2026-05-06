@@ -84,9 +84,13 @@ Format ghi:
 | 3 | 124:100 | "Đặt lại" | #FF4444 | #FFFFFF | 16px | 3.94:1 | ❌ | normal |
 
 **Tổng kết**: [n]/[total] text nodes đạt AA = [x]%
-**Method**: measured
+**Method**: `measured (full)` nếu quét toàn bộ; `measured (sampled n=N)` nếu sampling. Ghi rõ N và rule sampling.
 **Hard Gate H1**: [PASS/FAIL] (ngưỡng ≥95%)
 ```
+
+> **Quy tắc tag method**:
+> - `measured (full)`: quét 100% text nodes trong scope.
+> - `measured (sampled n=N)`: nếu >50 text nodes — sampling theo Bước 7. Báo cáo PHẢI ghi rõ tag này và confidence ±5%, không được ghi `measured` chung chung.
 
 ## Bước 6 — Tạo Finding (nếu fail)
 
@@ -114,8 +118,16 @@ Contrast = (1.0 + 0.05) / (0.179 + 0.05) = 1.05 / 0.229 = 4.58:1
 → AAA normal text: ❌ FAIL (4.58 < 7.0)
 ```
 
+## Bước 7 — Sampling khi >50 text nodes
+
+Khi tổng text node >50 và token budget eo hẹp:
+1. **Bao gồm 100%** text trên nền **không phải trắng/đen** (đây là vùng dễ fail nhất, không sampling).
+2. **Sampling 10 ngẫu nhiên** trong nhóm text trên nền trắng/đen (nhóm low-risk).
+3. Tag method: `measured (sampled n=<full_count + 10>)`.
+4. Nếu kết quả sample fail ≥1 node → mở rộng quét full nhóm trắng/đen, đổi tag thành `measured (full)`.
+
 ## Lưu ý
 
-- Nếu có > 50 text nodes → lấy mẫu: tất cả text trên nền không phải trắng/đen + 10 text ngẫu nhiên trên nền trắng
-- Placeholder text (opacity thấp) vẫn cần đạt contrast 4.5:1 vì chứa thông tin (WCAG 1.4.3)
+- Sampling chỉ dùng khi token budget thiếu — ưu tiên `measured (full)` nếu có thể.
+- Placeholder text (opacity thấp) vẫn cần đạt contrast 4.5:1 vì chứa thông tin (WCAG 1.4.3).
 - Icon text (icon font) xử lý như UI component → ngưỡng 3:1

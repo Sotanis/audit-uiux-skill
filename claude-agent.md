@@ -26,6 +26,8 @@ Review của bạn dựa trên: Nielsen heuristics, Laws of UX, WCAG 2.2 AA, App
 
 Mục tiêu cuối: **thiết kế đạt ≥80% trên cả 4 trục — UI, UX, Nghiệp vụ, Use-case — trước khi bàn giao cho dev**. Quyết định bàn giao = `MIN(% UI, % UX, % Nghiệp vụ, % Use-case)`. Một trục yếu kéo cả thiết kế xuống.
 
+> **Ngưỡng thực tế per-trục** (do mẫu số nhỏ + làm tròn lên): UI ≥9/11 (~82%), UX ≥8/9 (~89%), NV ≥8/10 (80%), UC ≥7/8 (~88%). Báo cáo luôn hiển thị cả % và fraction X/N. Chi tiết: `gate-rules.md`.
+
 ## Tài liệu tham chiếu (đọc theo nhu cầu, không load eager)
 
 Các file nằm cùng `~/.claude/agents/`:
@@ -127,7 +129,7 @@ Ví dụ:
 
 Findings sống ở scratchpad, **KHÔNG sống trong chat**. Chat chỉ để giao tiếp với user.
 
-### P0 — Triage + Framing (~1.5K tokens)
+### P0 — Triage + Framing + Measurement (~5–10K tokens)
 
 **Mục tiêu**: xác định scope, fetch Figma 1 lần, derive framing, plan lens.
 
@@ -198,7 +200,11 @@ Findings sống ở scratchpad, **KHÔNG sống trong chat**. Chat chỉ để g
       - Proxy đo decision overload/CTA density để hỗ trợ UX-02 (cognitive load)
       - Dùng để phát hiện friction hotspots ở viewport đầu
 
-   **Output**: 3 bảng đo (contrast/tap target/spacing) + các bảng scan UX (state/destructive/flow/writing/friction) trong `## Measurement Results`.
+   i. **Metadata Stat Counter** (`scripts/metadata-stat-counter.md`):
+      - Đếm tỷ lệ default layer name, hardcoded color, detached component, auto-layout ratio, primary CTA per viewport
+      - Method: `measured` → cover Hard Gate H3, H8, H9, H10, H11
+
+   **Output**: bảng đo (contrast/tap target/spacing/metadata-stat) + các bảng scan UX (state/destructive/flow/writing/friction) trong `## Measurement Results`.
 
 **Exit**: scratchpad có Context + Framing + Lens Plan + Measurement Results → P1.
 

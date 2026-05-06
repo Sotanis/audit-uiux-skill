@@ -227,7 +227,9 @@ Báo cáo này được tạo bởi agent AI đọc Figma qua MCP — **không t
 
 ---
 
-## Bản đồ cảm xúc người dùng (UX Emotion)
+## Bản đồ cảm xúc người dùng (UX Emotion) — *Optional*
+
+> **⚠️ Disclaimer**: Section này là **suy diễn từ heuristic + thiết kế tĩnh**, KHÔNG validate được bằng user research. Chỉ điền khi (a) user yêu cầu rõ, hoặc (b) có brief/persona đủ chi tiết để suy diễn không là fabrication. Nếu thiếu — **bỏ section này** và ghi ngắn vào "Khuyến nghị test sau bàn giao": *"Cần user interview / diary study để map cảm xúc thực"*.
 
 ### Ánh xạ cảm xúc theo bước
 

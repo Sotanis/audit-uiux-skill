@@ -30,11 +30,11 @@ Trong scope frame (viewport đầu tiên):
 
 Tính:
 
-\[
-UX02\_score = interactive\_count + info\_groups \times 0.5 + decision\_points \times 2
-\]
+```
+UX02_score = interactive_count + info_groups × 0.5 + decision_points × 2
+```
 
-Pass khi \(UX02\_score \le 12\).
+Pass khi `UX02_score ≤ 12`.
 
 ## Bước 3 — Detect “competing CTAs”
 

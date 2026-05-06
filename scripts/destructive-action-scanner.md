@@ -81,7 +81,6 @@ Rules:
 - ✅ PASS: có confirm hoặc undo (confidence >= medium)
 - ❌ FAIL: không thấy confirm/undo evidence
 - ⚠️ REVIEW: action có thể irreversible nhưng thiếu context domain (đưa vào NV/UC questions hoặc đề xuất confirm)
-```
 
 ## Bước 5 — Mapping sang gate/checklist
 

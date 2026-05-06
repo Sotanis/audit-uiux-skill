@@ -16,6 +16,19 @@ AGENT_FILES=(
   SELF-TEST-BAO-CAO.md
 )
 
+SCRIPT_FILES=(
+  contrast-checker.md
+  destructive-action-scanner.md
+  friction-scanner.md
+  metadata-stat-counter.md
+  naming-scanner.md
+  spacing-scanner.md
+  tap-target-checker.md
+  ux-flow-scanner.md
+  ux-state-scanner.md
+  ux-writing-lint.md
+)
+
 green()  { printf '\033[32m%s\033[0m\n' "$1"; }
 yellow() { printf '\033[33m%s\033[0m\n' "$1"; }
 red()    { printf '\033[31m%s\033[0m\n' "$1"; }
@@ -49,6 +62,15 @@ if ! is_local; then
     echo "  $f"
   done
 
+  mkdir -p "$TMPDIR_DL/scripts"
+  for f in "${SCRIPT_FILES[@]}"; do
+    if ! curl -fsSL "$REPO_URL/scripts/$f" -o "$TMPDIR_DL/scripts/$f" 2>/dev/null; then
+      yellow "Khong tai duoc scripts/$f (bo qua)"
+    else
+      echo "  scripts/$f"
+    fi
+  done
+
   green "Tai xong!"
 fi
 
@@ -63,6 +85,16 @@ KB_FILES=(
   SELF-TEST-BAO-CAO.md
 )
 
+copy_scripts() {
+  local dest="$1"
+  mkdir -p "$dest/scripts"
+  for f in "${SCRIPT_FILES[@]}"; do
+    if [[ -f "$SCRIPT_DIR/scripts/$f" ]]; then
+      cp "$SCRIPT_DIR/scripts/$f" "$dest/scripts/"
+    fi
+  done
+}
+
 install_cursor() {
   local dest="$HOME/.cursor/skills/audit-uiux"
   mkdir -p "$dest"
@@ -70,6 +102,7 @@ install_cursor() {
   for f in "${KB_FILES[@]}"; do
     cp "$SCRIPT_DIR/$f" "$dest/"
   done
+  copy_scripts "$dest"
   green "  Cursor: da copy vao $dest/"
 }
 
@@ -80,6 +113,7 @@ install_claude() {
   for f in "${KB_FILES[@]}"; do
     cp "$SCRIPT_DIR/$f" "$dest/"
   done
+  copy_scripts "$dest"
   green "  Claude Code: da copy vao $dest/"
 }
 

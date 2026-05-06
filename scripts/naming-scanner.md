@@ -5,7 +5,7 @@
 ## Mục đích
 Giúp các tiêu chí chấm điểm (đặc biệt là H4, H5, H6 - Empty/Error/Loading) đạt độ chính xác 100% bằng cách phát hiện các layer đặt tên lộn xộn, cảnh báo cho user, và tự động sửa tên trên Figma trước khi chấm.
 
-## Bước 1 — Quét và Nhận diện (Semantic Semantic)
+## Bước 1 — Quét và Nhận diện (Semantic)
 Sau khi có kết quả `get_metadata`, Agent quét toàn bộ cây thư mục để tìm các node mang ý nghĩa State (Trạng thái) hoặc CTA nhưng đặt tên sai chuẩn.
 
 Sử dụng AI Semantic matching để nhận diện dựa trên các từ khóa (Kể cả tiếng Việt không dấu/có dấu):

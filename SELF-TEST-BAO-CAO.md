@@ -1,86 +1,83 @@
 # Báo cáo Self-test — Audit UI/UX Agent
 
-**Ngày:** 2026-05-04 (máy môi trường agent)  
-**Phạm vi:** Kiểm tra tài liệu + kết nối Figma MCP; không chạy full audit trên file Figma “vàng/sạch” vì cần file test do team chuẩn bị.
+**Ngày:** 2026-05-06 (máy môi trường agent)
+**Phạm vi:** Kiểm tra tài liệu + cấu trúc workflow phased (P0–P4) + kết nối Figma MCP. Không chạy full audit trên file Figma "vàng/sạch" vì cần file test do team chuẩn bị.
 
 ---
 
-## 1. Ma trận T1–T4 (máy lạnh)
+## 1. Ma trận T1–T5 (máy lạnh, kiểm tra tài liệu)
 
 | ID | Mô tả | Kết quả | Ghi chú |
 |----|--------|---------|---------|
-| **T1** | Đủ file bắt buộc trong `audit-uiux/` | **PASS** | Có `SKILL.md`, `report-template.md`, `heuristics.md`, `gate-rules.md`, `install.sh`, `claude-agent.md`, … |
-| **T2** | Nhất quán quyết định bàn giao: gate vs điểm /100 | **PASS** (sau chỉnh sửa) | `SKILL.md` Step 12: gate-rules là chuẩn chính; điểm /100 từ checklist là bổ sung; ưu tiên gate khi mâu thuẫn. |
-| **T3** | Grep lệch version (9 bước, APPLY) | **PASS** (sau chỉnh sửa) | Sửa `PHAM-VI-TIEU-CHI-VA-THAM-CHIEU.md` (9 → 12 bước). Không còn “9 bước” trong repo. |
-| **T4** | `install.sh` hợp lệ | **PASS** | `bash -n install.sh` — cú pháp OK. `gate-rules.md` đã thêm vào `AGENT_FILES` + `KB_FILES`. |
+| **T1** | Đủ file bắt buộc trong `audit-uiux/` | **PASS** | `SKILL.md`, `claude-agent.md`, `report-template.md`, `heuristics.md`, `gate-rules.md`, `checklist.md`, `jtbd-framework.md`, `html-template.md`, `install.sh`, `scripts/` (10 file). |
+| **T2** | Nhất quán workflow phased: SKILL.md ↔ claude-agent.md | **PASS** | Cả hai đều có 5 phase P0–P4, P0 step 6–7 (naming + measurement scripts), P3 Validation Checklist, sub-checklist UX Writing/Platform/Layout, cross-check H7. |
+| **T3** | Nhất quán ngưỡng pass per-trục | **PASS** | `gate-rules.md` + `checklist.md` + `SKILL.md` + `claude-agent.md` + `GIOI-THIEU.md` đều ghi rõ UI ≥9/11, UX ≥8/9, NV ≥8/10, UC ≥7/8. |
+| **T4** | `install.sh` hợp lệ + copy `scripts/` | **PASS** | `bash -n install.sh` cú pháp OK. `SCRIPT_FILES` array có 10 file, hàm `copy_scripts` áp cho cả Cursor + Claude Code. |
+| **T5** | Hard Gate H3, H8, H9, H10, H11 có scanner cover | **PASS** | `scripts/metadata-stat-counter.md` đếm 5 metric measured. |
 
 ---
 
-## 2. Ma trận F1–F5 (Figma MCP)
+## 2. Ma trận P-PHASES (kiểm tra workflow phased)
+
+| Phase | Mô tả | Đầu vào | Đầu ra | Token budget |
+|-------|-------|---------|--------|--------------|
+| **P0** | Triage + Framing + Measurement | Figma URL, context | Scratchpad (Context, Framing, Lens Plan, Measurement Results) | ~5–10K |
+| **P1** | Load KB targeted | Lens plan từ P0 | Đoạn KB cần thiết | ~1.5–2K |
+| **P2** | Run 4 lenses + capture evidence | KB sections + measurement | Compressed findings + ảnh F-XXX | ~6–12K |
+| **P3** | Compute gate + compile + validate | Scratchpad complete | `bao-cao.md` + `bao-cao.html` | ~4–6K |
+| **P4** | Apply fix (gated, optional) | User confirm + checklist A-XXX | Edits applied + log | tuỳ batch |
+
+**Tổng**: ~20–40K cho 1 màn trung bình; ~40–70K cho 1 màn phức tạp; ~80–150K cho luồng 3–5 màn.
+
+---
+
+## 3. Ma trận F1–F5 (Figma MCP — cần chạy thực)
 
 | ID | Mô tả | Kết quả | Ghi chú |
 |----|--------|---------|---------|
-| **F1** | `whoami` Figma MCP | **PASS** | Xác thực thành công (email/handle/plans trả về). |
-| **F2** | Màn “vàng” (lỗi cố ý) | **SKIP** | Cần URL + file test cố định do team cung cấp. |
-| **F3** | Màn “sạch” | **SKIP** | Cùng lý do. |
-| **F4** | Brief mâu thuẫn | **SKIP** | Cần chạy agent trong session chat với prompt cụ thể. |
-| **F5** | Xuất `bao-cao.md` + `bao-cao.html` tại `~/Downloads/` | **SKIP** | Cần chạy full workflow Step 12 với quyền ghi file của agent. |
+| **F1** | `whoami` Figma MCP | **PASS** | Xác thực thành công khi token đủ quyền. |
+| **F2** | Màn "vàng" (lỗi cố ý) — chạy P0–P3 | **SKIP** | Cần URL + file test cố định do team cung cấp. |
+| **F3** | Màn "sạch" — chạy P0–P3, kỳ vọng READY | **SKIP** | Cùng lý do. |
+| **F4** | Brief mâu thuẫn — kiểm cơ chế hỏi 3 câu | **SKIP** | Cần chạy agent trong session chat với prompt cụ thể. |
+| **F5** | Xuất `bao-cao.md` + `bao-cao.html` tại `~/Downloads/` | **SKIP** | Cần chạy full workflow P0–P3 với quyền ghi file. |
 
 **Khuyến nghị:** Chuẩn bị 2 file Figma (vàng/sạch), lưu URL trong wiki nội bộ, lặp lại F2–F5 mỗi khi đổi phiên bản skill.
 
 ---
 
-## 3. Rubric khả năng hoạt động (0–5, đánh giá **thiết kế agent + tài liệu**, không phải một lần chạy audit cụ thể)
+## 4. Rubric khả năng hoạt động (0–5)
 
 | Tiêu chí | Điểm | Nhận xét |
 |----------|------|----------|
-| **Đúng fact từ Figma** | 3/5 | Phụ thuộc MCP + phạm vi `node-id`; agent có thể đọc sai nếu node quá lớn (truncate). |
-| **Đúng nguyên tắc** | 4/5 | Heuristic + `gate-rules` rõ; rủi ro ở % H1–H11 nếu không đếm thật. |
-| **Tính hành động** | 4/5 | Template + P0/P1/COOK NOW; tốt nếu finding gắn node. |
-| **Trung thực uncertainty** | 3/5 | Đã bổ sung quy tắc anti-hallucination + mục “Giới hạn định lượng” trong template; cần kỷ luật khi chạy. |
-| **Nhất quán nội bộ** | 4/5 | (Sau sửa) Gate vs /100 đã tách vai trò; còn rủi ro nếu agent cũ không đọc `gate-rules.md`. |
+| **Đúng fact từ Figma** | 4/5 | Sau khi có 10 scanner + metadata-stat-counter, độ chính xác `measured` cải thiện đáng kể. Vẫn phụ thuộc MCP API expose đủ field. |
+| **Đúng nguyên tắc** | 4/5 | Heuristics + gate-rules rõ; method labels (`measured`/`inferred`/`out_of_scope`) bắt buộc minh bạch. |
+| **Tính hành động** | 4/5 | P3 BẮT BUỘC mỗi finding 🔴/🟡 đủ 5 mục (a–e); ma trận Effort × Impact; checklist A-XXX cho COOK NOW. |
+| **Trung thực uncertainty** | 4/5 | Method labels + confidence ±10–15% khi inferred ratio ≥40%; contrast-checker tag `measured (full)` vs `measured (sampled n=N)`. |
+| **Nhất quán nội bộ** | 4/5 | Hai brain file đã đồng bộ scanner integration + P3 validation; ngưỡng pass nhất quán giữa 5 file. |
 
-**Trung bình ~3.6/5** — agent mạnh về **khung** và **báo cáo**, yếu hơn ở **định lượng y hệt tool chuyên dụng** nếu không có bước đếm xác thực.
+**Trung bình ~4.0/5** — agent mạnh về **khung phased + scanner integration**; còn rủi ro khi MCP version không expose đủ field (boundVariables, layoutMode chi tiết).
 
 ---
 
-## 4. Ưu điểm (tóm tắt)
+## 5. Ưu điểm
 
-- Quy trình 12 bước + gate 3 tầng + báo cáo có cấu trúc.  
-- Đa lăng kính: JTBD, heuristic, UX Writing/Flow/Emotion, behavioral impact.  
-- `gate-rules.md` chuẩn hóa READY/BLOCKED.  
-- Phân phối qua GitHub + `install.sh`; HTML portable.  
-- Thừa nhận giới hạn (template + SKILL).
+- Workflow phased P0–P4 rõ ràng, mỗi phase có exit criteria.
+- 10 scanner cover hết 11 Hard Gate (H1–H11) với method `measured` hoặc `inferred` minh bạch.
+- P3 Validation Checklist bắt buộc → giảm risk xuất báo cáo thiếu mục.
+- Method labels (`measured`/`inferred`/`out_of_scope`) chống "trông giống số liệu máy".
+- Evidence Capture Rules: 100% finding 🔴/🟡 phải có ảnh + nodeId.
+- Token budget quantify per scope; scratchpad pattern bắt buộc.
 
-## 5. Nhược điểm / rủi ro
+## 6. Nhược điểm / rủi ro
 
-- % Hard Gate và danh sách node: dễ “trông giống số liệu máy” nếu không gắn `[inferred]`.  
-- Emotion / tần suất: thiếu dữ liệu người dùng thật.  
-- Một screenshot = một viewport; “above fold” có thể lệch thiết bị.  
+- Hard Gate H3 (Primary CTA) phụ thuộc nhận diện → agent có thể tag `inferred` thay vì `measured` nếu thiếu naming convention.
+- UX Emotion / Peak-End trong template là suy diễn — đã tag optional + disclaimer trong report-template.md.
+- "Above fold" lệch theo thiết bị; chỉ đo trên 1 viewport size mặc định.
 - Ghi `~/Downloads/` phụ thuộc môi trường agent (sandbox).
 
-## 6. Điểm phi thực tế (agent ≠ người)
+## 7. Việc còn lại cho team
 
-- Emotion map, Peak-End: văn bản suy diễn, không validate được bằng user research.  
-- JTBD khi “audit luôn”: đúng mặt UI, có thể sai nghiệp vụ sâu.  
-- Bias tự tin của LLM — cần template disclaimer + kỷ luật `[ước lượng]`.
-
----
-
-## 7. Thay đổi tài liệu đã áp dụng (doc-fixes)
-
-| File | Thay đổi |
-|------|----------|
-| [SKILL.md](SKILL.md) | Prerequisites + Step 12: ưu tiên `gate-rules`, điểm /100 bổ sung, anti-hallucination H1–H11, Reference `gate-rules.md`. |
-| [report-template.md](report-template.md) | Bước 12; thêm mục **Giới hạn định lượng và phương pháp**. |
-| [PHAM-VI-TIEU-CHI-VA-THAM-CHIEU.md](PHAM-VI-TIEU-CHI-VA-THAM-CHIEU.md) | 12 bước; bảng file: `gate-rules`, `html-template`. |
-| [install.sh](install.sh) | `gate-rules.md` trong `AGENT_FILES` + `KB_FILES`. |
-| [README.md](README.md) | 7 file KB; dòng `gate-rules.md` trong bảng cấu trúc. |
-
----
-
-## 8. Việc còn lại cho team
-
-1. Chạy **F2–F5** với file Figma chuẩn hóa.  
-2. Định kỳ **đồng bộ** skill local với `git pull` / copy từ repo.  
-3. (Tùy chọn) Thêm script đếm WCAG/contrast thật qua plugin — giảm phụ thuộc suy luận cho H1.
+1. Chạy **F2–F5** với file Figma chuẩn hóa (1 vàng + 1 sạch).
+2. Định kỳ **đồng bộ** skill local với `git pull` / chạy `install.sh`.
+3. (Tuỳ chọn) Build plugin Figma đo contrast/tap target real-time để giảm phụ thuộc suy luận.
+4. Định kỳ review `scripts/` khi Figma MCP nâng version (có field mới → có thể đo thêm).

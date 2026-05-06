@@ -6,6 +6,14 @@ File này định nghĩa **ngưỡng cứng**, **công thức tính %**, và **l
 
 **Nguyên tắc**: thiết kế đạt **≥80% trên cả 4 trục** mới được bàn giao. Quyết định cuối = `MIN(% UI, % UX, % Nghiệp vụ, % Use-case)`.
 
+> **Lưu ý ngưỡng thực tế per-trục** (do mẫu số nhỏ + làm tròn lên):
+> - **UI**: 11 items active → cần **≥9/11 = 81.8%**
+> - **UX**: 9 items active → cần **≥8/9 = 88.9%** (≥80% ceiling lên 8 item)
+> - **Nghiệp vụ**: 10 items active → cần **≥8/10 = 80.0%**
+> - **Use-case**: 8 items active → cần **≥7/8 = 87.5%** (≥80% ceiling lên 7 item)
+>
+> Nói cách khác: trục UX và Use-case có ngưỡng pass cao hơn 80% danh nghĩa do mẫu số nhỏ. Báo cáo phải hiển thị **cả % thực tế lẫn fraction (X/N)** để tránh nhầm.
+
 ---
 
 ## Method labels — phân biệt độ tin cậy của từng item
