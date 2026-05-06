@@ -41,12 +41,12 @@ Nielsen heuristics, hierarchy, flow, feedback, error prevention, navigation.
 | ID | Item | Pass khi | Method | Cách kiểm |
 |----|------|----------|--------|-----------|
 | UX-02 | Cognitive load | ≤12 (interactive_count + info_groups×0.5 + decisions×2) trên 1 viewport | `inferred` | Đếm interactive element trong viewport đầu tiên — công thức ước lượng, có sai số |
-| UX-05 | Loading state đầy đủ | 100% async action có loading | `inferred` | Tìm variant/frame có "loading" / "skeleton" trong tên |
-| UX-06 | Empty state guidance | 100% empty state có icon + message + CTA | `inferred` | Tìm variant "empty" — kiểm 3 thành phần (icon, text, button) |
+| UX-05 | Loading state đầy đủ | 100% async action có loading | `measured*` | Tìm variant/frame có "loading" / "skeleton" trong tên |
+| UX-06 | Empty state guidance | 100% empty state có icon + message + CTA | `measured*` | Tìm variant "empty" — kiểm 3 thành phần (icon, text, button) |
 | UX-07 | Error message chất lượng | 100% error message nói rõ vấn đề + cách sửa | `inferred` | Đọc text error frame — heuristic: tránh "Đã xảy ra lỗi" / "Error 500" |
-| UX-08 | Dead-end | 0 dead-end (mọi state có path tiếp) | `inferred` | Walk flow connections — phụ thuộc prototype links có đầy đủ không |
-| UX-09 | Escape hatch | Mọi luồng có nút thoát/hủy/quay lại | `inferred` | Tìm Cancel/Back/Close button trong mọi modal/page |
-| UX-10 | Confirmation destructive | 100% destructive action có confirm hoặc undo | `inferred` | Tìm action button "Delete/Send/Submit" + dialog tương ứng |
+| UX-08 | Dead-end | 0 dead-end (mọi state có path tiếp) | `measured*` | Walk flow connections — phụ thuộc prototype links có đầy đủ không |
+| UX-09 | Escape hatch | Mọi luồng có nút thoát/hủy/quay lại | `measured*` | Tìm Cancel/Back/Close button trong mọi modal/page |
+| UX-10 | Confirmation destructive | 100% destructive action có confirm hoặc undo | `measured*` | Tìm action button "Delete/Send/Submit" + dialog tương ứng |
 | UX-11 | Consistency platform | Tuân HIG (iOS) / Material (Android, Web) cho nav pattern | `inferred` | Check pattern nav (tab bar position, back gesture, sheet style) |
 | UX-12 | Recognition over recall | Quan trọng visible, không bắt user nhớ từ màn trước | `inferred` | Check label, breadcrumb, summary panels |
 
@@ -55,7 +55,7 @@ Nielsen heuristics, hierarchy, flow, feedback, error prevention, navigation.
 - UX-03 Hierarchy attention top-3 — cần eye-tracking
 - UX-04 Feedback timing <1s/<3s — đo trên build
 
-**Ngưỡng pass UX**: ≥80% = ≥8/9 items active. **Toàn `inferred`** → ghi confidence ±10–15%.
+**Ngưỡng pass UX**: ≥80% = ≥8/9 items active. **`measured*`**: Đo lường định lượng được nếu Figma có nối dây Prototype hoặc thiết kế tuân thủ Naming Convention. Nếu thiếu dữ liệu, Agent sẽ fallback về `inferred` và ghi kèm độ tin cậy.
 
 ---
 

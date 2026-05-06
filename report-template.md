@@ -18,7 +18,7 @@ HAND-OFF DECISION: [READY / READY WITH NOTES / NEEDS REWORK / BLOCKED]
 
 📊 Score 4 trục (cần MIN ≥ 80%):
   UI         [bar]  [x]% [Mức]   ([pass]/11 active, M:[n]/I:[n])
-  UX         [bar]  [x]% [Mức]   ([pass]/9 active, toàn inferred ±15%)
+  UX         [bar]  [x]% [Mức]   ([pass]/9 active, [measured/inferred])
   Nghiệp vụ  [bar]  [x]% [Mức]   ([pass]/10 active, toàn inferred ±15%)
   Use-case   [bar]  [x]% [Mức]   ([pass]/8 active, M:[n]/I:[n])
   ─────────────────────────────────

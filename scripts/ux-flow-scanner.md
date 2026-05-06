@@ -63,12 +63,19 @@ Dead-end candidate nếu:
 
 Trong Mode B, chỉ đánh **⚠️ candidate**, không kết luận fail chắc chắn.
 
+## Bước 4.5 — Tính toán Tỷ lệ % (Measured Metric)
+Để chuyển UX-08 và UX-09 thành tiêu chí `measured`, cần tính 2 tỷ lệ:
+- **Tỷ lệ Dead-end**: `Số màn hình là Dead-end / Tổng số màn hình trong scope`. (Chỉ tính trong Mode A. Mode B sẽ ghi % candidate).
+- **Tỷ lệ Escape Hatch**: `Số Modal/Screen phụ có escape hatch / Tổng số Modal/Screen phụ`.
+
 ## Bước 5 — Output bảng (scratchpad)
 
 ```markdown
 ### UX Flow Scan Results (Scanner)
 
 **Flow confidence**: [high|medium|low] (prototype links: [yes/no])
+**Tỷ lệ Dead-end**: [X]% ([số màn hình fail]/[tổng màn hình])
+**Tỷ lệ Escape Hatch**: [Y]% ([số modal đạt]/[tổng modal])
 
 | Screen | Escape hatch | Outgoing edges | Dead-end risk | Evidence |
 |--------|--------------|---------------|--------------|----------|
@@ -90,10 +97,13 @@ Rules:
 ## Bước 6 — Mapping sang checklist
 
 - **UX-08 Dead-end**:
-  - PASS nếu không có dead-end risk (Mode A) hoặc không có “high risk” candidates (Mode B)
-  - FAIL nếu Mode A phát hiện dead-end thật (không edge + không escape hatch)
+  - PASS nếu Tỷ lệ Dead-end = 0% (Mode A).
+  - FAIL nếu > 0%.
+  - Tag method: `measured (prototype)` nếu Mode A; `inferred` nếu Mode B.
 - **UX-09 Escape hatch**:
-  - FAIL nếu có screen/modal quan trọng thiếu escape hatch
+  - PASS nếu Tỷ lệ Escape Hatch = 100%.
+  - FAIL nếu < 100%.
+  - Tag method: `measured (scan)` nếu tìm thấy rõ ràng các node escape; fallback `inferred`.
 
 ## Finding templates
 

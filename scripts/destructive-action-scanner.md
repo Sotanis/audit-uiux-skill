@@ -82,10 +82,13 @@ Rules:
 - ❌ FAIL: không thấy confirm/undo evidence
 - ⚠️ REVIEW: action có thể irreversible nhưng thiếu context domain (đưa vào NV/UC questions hoặc đề xuất confirm)
 
+**Tổng hợp số liệu (Measured Metric):**
+- **Tỷ lệ An toàn**: `[X]%` (Số action delete/reset đạt PASS / Tổng số action delete/reset phát hiện).
+
 ## Bước 5 — Mapping sang gate/checklist
 
-- **Hard Gate H7**: FAIL nếu có bất kỳ action type `delete/reset` rõ ràng mà Status = ❌ FAIL.
-- **UX-10**: FAIL nếu destructive actions không có confirm/undo.
+- **Hard Gate H7**: FAIL nếu Tỷ lệ An toàn < 100% (có bất kỳ action `delete/reset` nào ❌ FAIL).
+- **UX-10**: PASS nếu Tỷ lệ An toàn = 100%. Tag method: `measured*` (scan). Fallback `inferred` nếu thiếu dữ liệu context rõ ràng.
 
 ## Bước 6 — Finding templates
 

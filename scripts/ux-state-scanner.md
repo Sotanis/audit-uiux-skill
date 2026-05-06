@@ -79,16 +79,23 @@ Rules:
 - ✅ = thấy ≥1 evidence confidence high/medium
 - ⚠️ = chỉ có evidence low hoặc “toast-only”
 - ❌ = không thấy evidence trong scope
+
+**Tổng hợp số liệu (Measured Metric):**
+- **Tỷ lệ Async có Loading**: `[X]%` (Số frame async có ✅ Loading / Tổng số frame async).
+- **Tỷ lệ List có Empty**: `[Y]%` (Số list view có ✅ Empty / Tổng số list view).
+- **Tỷ lệ Form có Error**: `[Z]%` (Số form có ✅ Error / Tổng số form).
 ```
 
 ## Bước 5 — Mapping sang checklist/gate
 
 - **Hard Gate**
-  - H4 Empty state: PASS nếu mọi list/data view quan trọng có ✅ (không phải chỉ ⚠️)
-  - H5 Error state: PASS nếu form + async action quan trọng có ✅
-  - H6 Loading state: PASS nếu mọi async action quan trọng có ✅
+  - H4 Empty state: PASS nếu Tỷ lệ List có Empty = 100%.
+  - H5 Error state: PASS nếu Tỷ lệ Form có Error = 100%.
+  - H6 Loading state: PASS nếu Tỷ lệ Async có Loading = 100%.
 - **UX checklist**
-  - UX-05/06/07 ưu tiên dựa trên bảng coverage này.
+  - UX-05 (Loading): PASS nếu 100%. Tag method: `measured*`.
+  - UX-06 (Empty): PASS nếu 100%. Tag method: `measured*`.
+  - UX-07 (Error text): Vẫn dựa vào heuristic đọc text → `inferred`.
 
 ## Bước 6 — Tạo finding “missing evidence”
 

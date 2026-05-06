@@ -182,7 +182,7 @@ Ví dụ:
 
 ## Gate Computation (Phase 3)
 - UI %:        [/100]   (X/11 active, [measured/inferred ratio])
-- UX %:        [/100]   (X/9 active, toàn inferred — confidence ±10–15%)
+- UX %:        [/100]   (X/9 active, [measured/inferred ratio])
 - Nghiệp vụ %: [/100]   (X/10, toàn inferred — confidence ±10–15%)
 - Use-case %:  [/100]   (X/8 active)
 - MIN:         [%]
