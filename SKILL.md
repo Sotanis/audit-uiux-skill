@@ -269,9 +269,6 @@ Quan trọng:
 
 **Quy tắc**: finding 🔴 và 🟡 BẮT BUỘC gắn US-XX. Không gắn được → finding đó là polish (🟢) hoặc noise (bỏ).
 
-**Quy tắc báo cáo (BẮT BUỘC)**:
-- Trong báo cáo cuối, phần **Câu chuyện người dùng liên quan** của mỗi finding 🔴/🟡 phải **trích nguyên văn đầy đủ** user story từ scratchpad (kèm AC), **không** ghi mỗi mã `US-03/US-04`.
-
 ### Evidence Capture Rules — BẮT BUỘC
 
 **Mỗi finding phải có ít nhất 1 ảnh node lỗi.** Đây không phải optional, không "thêm sau ở P3" — chụp **ngay tại lúc tạo finding** trong P2.

@@ -20,139 +20,30 @@ Agent sử dụng file này khi cần tạo file `bao-cao.html` ở Step 9.
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{TITLE}}</title>
 <style>
-  :root {
-    color-scheme: light;
-    --bg: #f5f7fb;
-    --paper: #ffffff;
-    --text: #111827;
-    --muted: #6b7280;
-    --border: #e5e7eb;
-    --border-strong: #d1d5db;
-    --header: #0f172a;
-    --subheader: #1f2937;
-    --table-head: #f3f4f6;
-    --code-bg: #0b1220;
-    --code-text: #e5e7eb;
-    --quote-bg: #f0f7ff;
-    --quote-border: #2563eb;
-  }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.75;
-    color: var(--text);
-    background: var(--bg);
-    padding: 28px 18px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6; color: #1a1a1a; background: #f8f9fa;
+    max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem;
   }
-
-  /* A readable "paper" container so content never blends into bg */
-  .page {
-    max-width: 980px;
-    margin: 0 auto;
-    background: var(--paper);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 28px 26px;
-    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
-  }
-
-  h1, h2, h3 { line-height: 1.25; }
-  h1 {
-    font-size: 1.9rem;
-    margin: 0 0 1rem;
-    color: var(--header);
-    letter-spacing: -0.01em;
-    border-bottom: 2px solid var(--border);
-    padding-bottom: 0.6rem;
-  }
-  h2 { font-size: 1.35rem; margin: 1.75rem 0 0.75rem; color: var(--header); }
-  h3 { font-size: 1.1rem; margin: 1.25rem 0 0.55rem; color: var(--subheader); }
-  p { margin: 0.65rem 0; }
-
-  a { color: #2563eb; text-decoration: none; }
-  a:hover { text-decoration: underline; }
-
-  img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    margin: 0.9rem 0;
-    background: #fff;
-  }
-
-  hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
-  strong { color: var(--text); }
-
-  /* Lists */
-  ul, ol { padding-left: 1.4rem; margin: 0.55rem 0; }
-  li { margin: 0.25rem 0; }
-
-  /* Blockquotes */
+  h1 { font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 2px solid #e0e0e0; padding-bottom: 0.5rem; }
+  h2 { font-size: 1.4rem; margin: 1.8rem 0 0.8rem; color: #2c3e50; }
+  h3 { font-size: 1.15rem; margin: 1.4rem 0 0.6rem; color: #34495e; }
+  p { margin: 0.6rem 0; }
+  img { max-width: 100%; border: 1px solid #ddd; border-radius: 6px; margin: 0.8rem 0; }
+  table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.92rem; }
+  th, td { border: 1px solid #ddd; padding: 0.5rem 0.75rem; text-align: left; }
+  th { background: #f0f2f5; font-weight: 600; }
+  tr:nth-child(even) { background: #fafbfc; }
   blockquote {
-    border-left: 4px solid var(--quote-border);
-    background: var(--quote-bg);
-    padding: 0.75rem 1rem;
-    margin: 1rem 0;
-    color: #0b2545;
-    border-radius: 10px;
+    border-left: 3px solid #3498db; background: #f0f7ff;
+    padding: 0.6rem 1rem; margin: 0.8rem 0; font-style: italic;
   }
-
-  /* Inline code */
-  code {
-    background: #f1f5f9;
-    border: 1px solid var(--border);
-    padding: 0.12rem 0.35rem;
-    border-radius: 6px;
-    font-size: 0.92em;
-  }
-
-  /* Code blocks */
-  pre {
-    margin: 0.9rem 0;
-    padding: 0.95rem 1rem;
-    overflow: auto;
-    border-radius: 12px;
-    background: var(--code-bg);
-    border: 1px solid rgba(148, 163, 184, 0.25);
-  }
-  pre code {
-    background: transparent;
-    border: none;
-    padding: 0;
-    color: var(--code-text);
-    font-size: 0.92rem;
-    line-height: 1.6;
-  }
-
-  /* Tables: always readable & scrollable on mobile */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 0.9rem 0;
-    font-size: 0.95rem;
-  }
-  th, td {
-    border: 1px solid var(--border);
-    padding: 0.55rem 0.75rem;
-    vertical-align: top;
-    text-align: left;
-  }
-  th {
-    background: var(--table-head);
-    font-weight: 700;
-    color: #111827;
-    border-color: var(--border-strong);
-  }
-  tr:nth-child(even) { background: #fafafa; }
-
-  /* If markdown converter wraps tables, keep them scrollable */
-  .table-wrap { overflow-x: auto; }
-  .table-wrap table { min-width: 640px; }
+  ul, ol { padding-left: 1.5rem; margin: 0.5rem 0; }
+  li { margin: 0.3rem 0; }
+  code { background: #f0f2f5; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.9em; }
+  hr { border: none; border-top: 1px solid #e0e0e0; margin: 1.5rem 0; }
+  strong { color: #1a1a1a; }
 
   .severity-p0 { color: #e74c3c; font-weight: 700; }
   .severity-p1 { color: #e67e22; font-weight: 700; }
@@ -164,17 +55,14 @@ Agent sử dụng file này khi cần tạo file `bao-cao.html` ở Step 9.
   .finding-p2 { border-left: 4px solid #3498db; }
 
   @media print {
-    body { padding: 0; background: #fff; }
-    .page { max-width: 100%; border: none; border-radius: 0; box-shadow: none; padding: 18px; }
+    body { max-width: 100%; padding: 1rem; background: #fff; }
     .finding { break-inside: avoid; }
     img { max-height: 400px; }
   }
 </style>
 </head>
 <body>
-<main class="page">
 {{CONTENT}}
-</main>
 </body>
 </html>
 ```
@@ -227,16 +115,6 @@ Số điểm `/100` hiển thị lớn:
 ```
 
 Nếu không đọc được file ảnh (lỗi hoặc không tồn tại), giữ nguyên `src` gốc và thêm ghi chú `<!-- ảnh không nhúng được -->`.
-
-### Table overflow (khuyến nghị)
-
-Để bảng không bị “bóp” trên màn hình nhỏ, khi render HTML hãy bọc mỗi `<table>` bằng:
-
-```html
-<div class="table-wrap">
-  <table>...</table>
-</div>
-```
 
 ### Bố cục ảnh trong finding (side-by-side khi có ảnh ngữ cảnh)
 
