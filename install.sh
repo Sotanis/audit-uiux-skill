@@ -29,6 +29,12 @@ SCRIPT_FILES=(
   ux-writing-lint.md
 )
 
+# Render HTML cố định (npm run render-report)
+RENDER_FILES=(
+  render-report.mjs
+  report-shell.html
+)
+
 green()  { printf '\033[32m%s\033[0m\n' "$1"; }
 yellow() { printf '\033[33m%s\033[0m\n' "$1"; }
 red()    { printf '\033[31m%s\033[0m\n' "$1"; }
@@ -71,6 +77,19 @@ if ! is_local; then
     fi
   done
 
+  if ! curl -fsSL "$REPO_URL/package.json" -o "$TMPDIR_DL/package.json" 2>/dev/null; then
+    yellow "Khong tai duoc package.json (bo qua render npm)"
+  else
+    echo "  package.json"
+  fi
+  for f in "${RENDER_FILES[@]}"; do
+    if ! curl -fsSL "$REPO_URL/scripts/$f" -o "$TMPDIR_DL/scripts/$f" 2>/dev/null; then
+      yellow "Khong tai duoc scripts/$f (bo qua render)"
+    else
+      echo "  scripts/$f"
+    fi
+  done
+
   green "Tai xong!"
 fi
 
@@ -95,6 +114,35 @@ copy_scripts() {
   done
 }
 
+copy_render_tooling() {
+  local dest="$1"
+  mkdir -p "$dest/scripts"
+  if [[ -f "$SCRIPT_DIR/package.json" ]]; then
+    cp "$SCRIPT_DIR/package.json" "$dest/"
+  fi
+  for f in "${RENDER_FILES[@]}"; do
+    if [[ -f "$SCRIPT_DIR/scripts/$f" ]]; then
+      cp "$SCRIPT_DIR/scripts/$f" "$dest/scripts/"
+    fi
+  done
+}
+
+npm_install_render() {
+  local dest="$1"
+  [[ -f "$dest/package.json" ]] || return 0
+  if command -v npm >/dev/null 2>&1; then
+    echo ""
+    yellow "Cai dependency render-report (marked)..."
+    if (cd "$dest" && npm install --silent); then
+      green "  npm install xong. Chay: cd $dest && npm run render-report -- /path/bao-cao.md"
+    else
+      yellow "  npm install that bai. Thu tay: cd $dest && npm install"
+    fi
+  else
+    yellow "  Khong co npm trong PATH — bo qua. Cai Node.js (LTS) roi chay: cd $dest && npm install"
+  fi
+}
+
 install_cursor() {
   local dest="$HOME/.cursor/skills/audit-uiux"
   mkdir -p "$dest"
@@ -103,7 +151,9 @@ install_cursor() {
     cp "$SCRIPT_DIR/$f" "$dest/"
   done
   copy_scripts "$dest"
+  copy_render_tooling "$dest"
   green "  Cursor: da copy vao $dest/"
+  npm_install_render "$dest"
 }
 
 install_claude() {
@@ -114,7 +164,9 @@ install_claude() {
     cp "$SCRIPT_DIR/$f" "$dest/"
   done
   copy_scripts "$dest"
+  copy_render_tooling "$dest"
   green "  Claude Code: da copy vao $dest/"
+  npm_install_render "$dest"
 }
 
 print_mcp_guide() {

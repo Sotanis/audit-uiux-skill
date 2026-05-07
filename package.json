@@ -1,0 +1,11 @@
+{
+  "name": "audit-uiux-skill",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "render-report": "node scripts/render-report.mjs"
+  },
+  "dependencies": {
+    "marked": "^15.0.7"
+  }
+}

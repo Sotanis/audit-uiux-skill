@@ -107,6 +107,8 @@ chmod +x install.sh
 ./install.sh
 ```
 
+`install.sh` cũng copy **`package.json`** + **`scripts/render-report.mjs`** + **`scripts/report-shell.html`** vào thư mục skill đã chọn và **chạy `npm install`** ở đó nếu máy có lệnh `npm` (cài [Node.js LTS](https://nodejs.org/) nếu chưa có). Như vậy bạn có thể xuất HTML cố định ngay sau khi cài Agent: `cd ~/.cursor/skills/audit-uiux` (hoặc `~/.claude/agents`) rồi `npm run render-report -- /path/bao-cao.md`. Nếu không có `npm`, bước này bị bỏ qua — Agent vẫn chạy bình thường.
+
 ### Cách 3 — Cài thủ công
 
 ```bash
@@ -170,6 +172,18 @@ Bao gồm:
 - `screenshot-F-*.png`
 - `review-scratchpad-*.md` (debug/resume)
 
+### Xuất `bao-cao.html` ổn định (script)
+
+Sau khi đã có `bao-cao.md` + ảnh trong cùng thư mục, có thể render HTML **cùng theme mọi lần** (không phụ thuộc LLM):
+
+```bash
+cd /path/to/audit-uiux-skill
+npm install
+npm run render-report -- ~/Downloads/audit-report-<screen>-<date>/bao-cao.md
+```
+
+Shell CSS nằm trong [`scripts/report-shell.html`](scripts/report-shell.html). Chi tiết: [`html-template.md`](html-template.md).
+
 ### COOK NOW (tuỳ chọn)
 
 Sau khi có báo cáo, bạn có thể yêu cầu agent sửa trực tiếp Figma theo checklist trong báo cáo:
@@ -200,7 +214,8 @@ COOK NOW các mục: A-001, A-003
 - `claude-agent.md`: brain file cho Claude Code (được copy thành `~/.claude/agents/audit-uiux.md`)
 - `gate-rules.md`, `checklist.md`, `heuristics.md`, `jtbd-framework.md`: KB cốt lõi
 - `report-template.md`, `html-template.md`: template báo cáo
-- `scripts/`: 10 scanner
+- `scripts/`: scanner + `render-report.mjs`, `report-shell.html`
+- `package.json`: dependency `marked` cho `npm run render-report`
 - `install.sh`: script cài đặt
 
 ---
