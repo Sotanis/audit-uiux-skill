@@ -12,7 +12,7 @@
 | **T1** | Đủ file bắt buộc trong `audit-uiux/` | **PASS** | `SKILL.md`, `claude-agent.md`, `report-template.md`, `heuristics.md`, `gate-rules.md`, `checklist.md`, `jtbd-framework.md`, `html-template.md`, `install.sh`, `scripts/` (10 file). |
 | **T2** | Nhất quán workflow phased: SKILL.md ↔ claude-agent.md | **PASS** | Cả hai đều có 5 phase P0–P4, P0 step 6–7 (naming + measurement scripts), P3 Validation Checklist, sub-checklist UX Writing/Platform/Layout, cross-check H7. |
 | **T3** | Nhất quán ngưỡng pass per-trục | **PASS** | `gate-rules.md` + `checklist.md` + `SKILL.md` + `claude-agent.md` + `GIOI-THIEU.md` đều ghi rõ UI ≥9/11, UX ≥8/9, NV ≥8/10, UC ≥7/8. |
-| **T4** | `install.sh` hợp lệ + copy `scripts/` | **PASS** | `bash -n install.sh` cú pháp OK. `SCRIPT_FILES` array có 10 file, hàm `copy_scripts` áp cho cả Cursor + Claude Code. |
+| **T4** | `install.sh` hợp lệ + copy `scripts/` | **PASS** | `bash -n install.sh` cú pháp OK. `SCRIPT_FILES` array có 10 file, hàm `copy_scripts` áp cho Claude Code. |
 | **T5** | Hard Gate H3, H8, H9, H10, H11 có scanner cover | **PASS** | `scripts/metadata-stat-counter.md` đếm 5 metric measured. |
 
 ---

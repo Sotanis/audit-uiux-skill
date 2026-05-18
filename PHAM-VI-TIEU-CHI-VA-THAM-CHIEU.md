@@ -1,8 +1,8 @@
 # Phạm vi Agent, Căn cứ Tham chiếu và Tiêu chí Đánh giá
 
-Tài liệu mô tả **phạm vi** skill **Audit UI/UX**, **nguồn thông tin** agent dùng, và **tiêu chí** đánh giá / phân loại. Dùng chung cho Cursor và Claude Code.
+Tài liệu mô tả **phạm vi** skill **Audit UI/UX**, **nguồn thông tin** agent dùng, và **tiêu chí** đánh giá / phân loại. Dùng cho Claude Code.
 
-**Workflow chi tiết từng phase:** [SKILL.md](SKILL.md) (Cursor) hoặc [claude-agent.md](claude-agent.md) (Claude Code)
+**Workflow chi tiết từng phase:** [claude-agent.md](claude-agent.md) (Claude Code)
 **Công thức gate + ngưỡng:** [gate-rules.md](gate-rules.md)
 **Checklist 4 trục:** [checklist.md](checklist.md)
 
@@ -62,8 +62,7 @@ Công cụ cụ thể phụ thuộc máy chủ MCP bạn cài; danh mục đầy
 
 | File | Vai trò |
 |------|---------|
-| [SKILL.md](SKILL.md) | Brain file Cursor — workflow phased execution P0–P4, hỏi bổ sung 3 câu, ranh giới skill, giới hạn |
-| [claude-agent.md](claude-agent.md) | Brain file Claude Code — cùng triết lý, frontmatter cho Claude |
+| [claude-agent.md](claude-agent.md) | Brain file Claude Code — workflow phased execution P0–P4, hỏi bổ sung 3 câu, ranh giới skill, giới hạn |
 | [gate-rules.md](gate-rules.md) | **Đọc đầu mỗi review.** 11 hard gate + 4 trục score gate + severity gate; method labels + công thức tính % |
 | [checklist.md](checklist.md) | Checklist 4 trục UI(11) / UX(9) / NV(10) / UC(8) — dùng compute % ở P3 |
 | [heuristics.md](heuristics.md) | Tám nhóm heuristic (Apple HIG + Material + Nielsen) — load section khi lens cần |
@@ -182,7 +181,6 @@ Dùng kết hợp với P0–P2: lỗi **hay gặp + hậu quả lớn** → ưu
 |----------|------|
 | Giới thiệu agent | [GIOI-THIEU.md](GIOI-THIEU.md) |
 | Cài đặt & sử dụng | [README.md](README.md) |
-| Workflow Cursor | [SKILL.md](SKILL.md) |
 | Workflow Claude Code | [claude-agent.md](claude-agent.md) |
 | Công thức gate | [gate-rules.md](gate-rules.md) |
 | Checklist 4 trục | [checklist.md](checklist.md) |

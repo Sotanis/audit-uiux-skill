@@ -4,7 +4,6 @@ set -euo pipefail
 REPO_URL="https://raw.githubusercontent.com/Sotanis/audit-uiux-skill/main"
 
 AGENT_FILES=(
-  SKILL.md
   claude-agent.md
   gate-rules.md
   heuristics.md
@@ -143,19 +142,6 @@ npm_install_render() {
   fi
 }
 
-install_cursor() {
-  local dest="$HOME/.cursor/skills/audit-uiux"
-  mkdir -p "$dest"
-  cp "$SCRIPT_DIR/SKILL.md" "$dest/"
-  for f in "${KB_FILES[@]}"; do
-    cp "$SCRIPT_DIR/$f" "$dest/"
-  done
-  copy_scripts "$dest"
-  copy_render_tooling "$dest"
-  green "  Cursor: da copy vao $dest/"
-  npm_install_render "$dest"
-}
-
 install_claude() {
   local dest="$HOME/.claude/agents"
   mkdir -p "$dest"
@@ -174,70 +160,29 @@ print_mcp_guide() {
   yellow "=== Buoc tiep: Ket noi Figma MCP (official, OAuth) ==="
   echo ""
   echo "Luu y: Claude app (chat truc tiep) KHONG ho tro MCP."
-  echo "Ban can dung Cursor hoac Claude Code de ket noi Figma MCP."
+  echo "Ban can dung Claude Code de ket noi Figma MCP."
   echo ""
-
-  if [[ "$1" == "cursor" || "$1" == "both" ]]; then
-    echo "2a. Cursor (preferred):"
-    echo "    - Mo Agent chat trong Cursor va chay: /add-plugin figma"
-    echo "    - Sau do vao Settings > MCP va Authenticate/Allow (neu duoc hoi)"
-    echo ""
-  fi
-
-  if [[ "$1" == "claude" || "$1" == "both" ]]; then
-    echo "2b. Claude Code (preferred):"
-    echo "    - Chay: claude plugin install figma@claude-plugins-official"
-    echo "    - Mo session Claude Code moi, go /mcp va Authenticate (neu duoc hoi)"
-    echo ""
-    echo "    Claude Code (manual):"
-    echo "    - Chay: claude mcp add --scope user --transport http figma https://mcp.figma.com/mcp"
-    echo "    - Trong Claude Code: /mcp > figma > Authenticate > Allow Access"
-    echo ""
-  fi
+  echo "Claude Code (preferred):"
+  echo "    - Chay: claude plugin install figma@claude-plugins-official"
+  echo "    - Mo session Claude Code moi, go /mcp va Authenticate (neu duoc hoi)"
+  echo ""
+  echo "Claude Code (manual):"
+  echo "    - Chay: claude mcp add --scope user --transport http figma https://mcp.figma.com/mcp"
+  echo "    - Trong Claude Code: /mcp > figma > Authenticate > Allow Access"
+  echo ""
 }
 
 echo ""
 echo "========================================="
-echo "  Audit UI/UX — Cai dat Agent"
+echo "  Audit UI/UX — Cai dat Agent (Claude Code)"
 echo "========================================="
 echo ""
-echo "Ban dung cong cu nao?"
-echo ""
-echo "  1) Cursor"
-echo "  2) Claude Code"
-echo "  3) Ca hai"
-echo ""
-if [[ -t 0 ]]; then
-  read -rp "Chon (1/2/3): " choice
-else
-  exec < /dev/tty
-  read -rp "Chon (1/2/3): " choice
-fi
 
-echo ""
-
-case "$choice" in
-  1)
-    install_cursor
-    print_mcp_guide "cursor"
-    ;;
-  2)
-    install_claude
-    print_mcp_guide "claude"
-    ;;
-  3)
-    install_cursor
-    install_claude
-    print_mcp_guide "both"
-    ;;
-  *)
-    red "Lua chon khong hop le. Chay lai script."
-    exit 1
-    ;;
-esac
+install_claude
+print_mcp_guide
 
 green "=== Cai dat hoan tat! ==="
 echo ""
-echo "Thu nghiem: mo Cursor hoac Claude Code, go:"
+echo "Thu nghiem: mo Claude Code, go:"
 echo '  Audit UI/UX cho: https://figma.com/design/XXX/App?node-id=1-2'
 echo ""

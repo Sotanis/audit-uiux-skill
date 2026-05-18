@@ -17,7 +17,7 @@ Tài liệu nền: [GIOI-THIEU.md](GIOI-THIEU.md)
 
 ## Quickstart
 
-### 1) Cài agent (Cursor / Claude Code)
+### 1) Cài agent (Claude Code)
 
 Chạy một lệnh:
 
@@ -25,27 +25,15 @@ Chạy một lệnh:
 bash <(curl -fsSL https://raw.githubusercontent.com/Sotanis/audit-uiux-skill/main/install.sh)
 ```
 
-Script sẽ copy đúng file vào:
-- Cursor: `~/.cursor/skills/audit-uiux/`
-- Claude Code: `~/.claude/agents/audit-uiux.md` (+ `scripts/`)
+Script sẽ copy đúng file vào: `~/.claude/agents/audit-uiux.md` (+ `scripts/`).
 
 > Nếu shell của bạn không hỗ trợ `bash <(curl ...)`, hãy clone repo và chạy `./install.sh` (xem mục “Cài đặt” bên dưới).
 
 ### 2) Kết nối Figma MCP (official, OAuth)
 
-> **Quan trọng**: **Claude app (chat trực tiếp)** không hỗ trợ MCP. Bạn cần **Cursor** hoặc **Claude Code**.
+> **Quan trọng**: **Claude app (chat trực tiếp)** không hỗ trợ MCP. Bạn cần **Claude Code**.
 >
 > Hướng dẫn official: [`remote-server-installation/#claude-code`](https://developers.figma.com/docs/figma-mcp-server/remote-server-installation/#claude-code)
-
-#### Cursor (preferred)
-
-Trong Cursor Agent chat:
-
-```
-/add-plugin figma
-```
-
-Sau đó Authenticate/Allow theo UI trong Settings → MCP.
 
 #### Claude Code (preferred)
 
@@ -83,7 +71,7 @@ Nếu agent hỏi context, trả lời ngắn gọn 3 ý: **persona → JTBD →
 |---------|--------|
 | macOS / Linux (Windows: WSL2) | Khuyến nghị |
 | bash + curl | Để chạy `install.sh` |
-| Cursor **hoặc** Claude Code | Để chạy agent |
+| Claude Code | Để chạy agent |
 | Tài khoản Figma có quyền đọc file | Cần để MCP đọc node |
 
 > **Rate limit**: Figma MCP có giới hạn theo plan/seat. Khi tool chậm hoặc bị cắt ngữ cảnh, hãy giảm scope (chọn frame nhỏ hơn).
@@ -107,21 +95,11 @@ chmod +x install.sh
 ./install.sh
 ```
 
-`install.sh` cũng copy **`package.json`** + **`scripts/render-report.mjs`** + **`scripts/report-shell.html`** vào thư mục skill đã chọn và **chạy `npm install`** ở đó nếu máy có lệnh `npm` (cài [Node.js LTS](https://nodejs.org/) nếu chưa có). Như vậy bạn có thể xuất HTML cố định ngay sau khi cài Agent: `cd ~/.cursor/skills/audit-uiux` (hoặc `~/.claude/agents`) rồi `npm run render-report -- /path/bao-cao.md`. Nếu không có `npm`, bước này bị bỏ qua — Agent vẫn chạy bình thường.
+`install.sh` cũng copy **`package.json`** + **`scripts/render-report.mjs`** + **`scripts/report-shell.html`** vào `~/.claude/agents/` và **chạy `npm install`** ở đó nếu máy có lệnh `npm` (cài [Node.js LTS](https://nodejs.org/) nếu chưa có). Như vậy bạn có thể xuất HTML cố định ngay sau khi cài Agent: `cd ~/.claude/agents` rồi `npm run render-report -- /path/bao-cao.md`. Nếu không có `npm`, bước này bị bỏ qua — Agent vẫn chạy bình thường.
 
 ### Cách 3 — Cài thủ công
 
 ```bash
-# Cursor
-mkdir -p ~/.cursor/skills/audit-uiux/scripts
-cp SKILL.md ~/.cursor/skills/audit-uiux/
-cp gate-rules.md heuristics.md jtbd-framework.md checklist.md \
-   report-template.md html-template.md \
-   PHAM-VI-TIEU-CHI-VA-THAM-CHIEU.md SELF-TEST-BAO-CAO.md \
-   ~/.cursor/skills/audit-uiux/
-cp scripts/*.md ~/.cursor/skills/audit-uiux/scripts/
-
-# Claude Code
 mkdir -p ~/.claude/agents/scripts
 cp claude-agent.md ~/.claude/agents/audit-uiux.md
 cp gate-rules.md heuristics.md jtbd-framework.md checklist.md \
@@ -210,7 +188,6 @@ COOK NOW các mục: A-001, A-003
 
 ## Cấu trúc file trong repo
 
-- `SKILL.md`: brain file cho Cursor
 - `claude-agent.md`: brain file cho Claude Code (được copy thành `~/.claude/agents/audit-uiux.md`)
 - `gate-rules.md`, `checklist.md`, `heuristics.md`, `jtbd-framework.md`: KB cốt lõi
 - `report-template.md`, `html-template.md`: template báo cáo
@@ -223,5 +200,5 @@ COOK NOW các mục: A-001, A-003
 ## Tham khảo
 
 - Triết lý + ví dụ output: [GIOI-THIEU.md](GIOI-THIEU.md)
-- Workflow chi tiết: `SKILL.md` / `claude-agent.md`
+- Workflow chi tiết: `claude-agent.md`
 - Hướng dẫn official Figma MCP: [`https://developers.figma.com/docs/figma-mcp-server/`](https://developers.figma.com/docs/figma-mcp-server/)

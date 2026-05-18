@@ -136,5 +136,5 @@ Liệt kê trong báo cáo dưới phần "Khuyến nghị test sau bàn giao":
 ## Liên kết
 
 - Công thức tính + 3-tầng gate: [gate-rules.md](gate-rules.md)
-- Workflow agent: [SKILL.md](SKILL.md) (Cursor) hoặc [claude-agent.md](claude-agent.md) (Claude Code)
+- Workflow agent: [claude-agent.md](claude-agent.md) (Claude Code)
 - Template báo cáo: [report-template.md](report-template.md)

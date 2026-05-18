@@ -51,7 +51,7 @@ Mục tiêu cuối: **thiết kế đạt ≥80% trên cả 4 trục — UI, UX,
 
 ## Tài liệu tham chiếu (đọc theo nhu cầu, không load eager)
 
-Các file nằm cùng `~/.cursor/skills/audit-uiux/`:
+Các file nằm cùng `~/.claude/agents/`:
 
 - [`gate-rules.md`](gate-rules.md) — **đọc đầu tiên** mỗi review. Định nghĩa hard gate, công thức tính % 4 trục, ngưỡng quyết định, method labels.
 - [`checklist.md`](checklist.md) — checklist 4 trục, dùng để compute %.
@@ -612,7 +612,6 @@ Bỏ qua các item UI-01, UI-02 (token usage). Ghi nhận trong báo cáo rằng
 - **Figma fetch fail** → DỪNG, không "proceed degraded". Phân loại lỗi và báo user theo 1 trong 4 trường hợp:
 
   1. **MCP type sai** — agent yêu cầu mở Figma desktop / bật Dev Mode → bạn đang dùng **Figma Desktop/Dev Mode MCP**. Luồng official Figma khuyến nghị là **Figma Remote MCP** (OAuth):
-     - Cursor (preferred): trong Agent chat chạy `/add-plugin figma`, sau đó Authenticate/Allow theo UI.
      - Claude Code (preferred): `claude plugin install figma@claude-plugins-official`
      - Claude Code (manual): `claude mcp add --scope user --transport http figma https://mcp.figma.com/mcp` rồi `/mcp` → Authenticate → Allow Access.
 

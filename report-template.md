@@ -85,7 +85,7 @@ Phần này giúp team theo dõi chi phí LLM/agent cho mỗi audit và so sánh
 - **Số MCP tool calls**: ~[n] (`get_screenshot` × N + `get_design_context` × M + `get_metadata` × K + …)
 - **Số finding tổng**: [n] (P0: [a] / P1: [b] / P2: [c])
 
-> **Lưu ý**: token ước tính dựa trên scratchpad agent + phase budget, không phải số đếm chính xác từ API billing. Sai số ±15%. Để biết số thực, đối chiếu với log của Cursor / Claude Code / dashboard Anthropic Console.
+> **Lưu ý**: token ước tính dựa trên scratchpad agent + phase budget, không phải số đếm chính xác từ API billing. Sai số ±15%. Để biết số thực, đối chiếu với log của Claude Code / dashboard Anthropic Console.
 
 ---
 
